@@ -185,3 +185,25 @@ Object类是Java所有类的祖宗类
 2、方法重写的应用场景
 
 object的toString是显示地址，可以改写
+
+3、继承后，子类访问成员的特点：就近原则，子类没有找父类，父类没有报错
+
+当子类父类中有重名成员时，在子类中调用时，会优先访问子类中的，若要访问父类中的，加super.
+
+4、子类构造器的特点
+
+继承后，子类的构造器会先调用父类的构造器，再执行自己的
+
+```
+public class Wolf extends Animal {
+    public Wolf(){
+        //super();//写不写都有，调用父类的无参构造器
+        System.out.println("子类的无参构造器执行了");
+    }
+    public Wolf(String n)
+    {
+        //super(n);//写不写都有，调用父类的有参构造器
+        System.out.println("子类的无参构造器执行了");
+    }
+}
+```
