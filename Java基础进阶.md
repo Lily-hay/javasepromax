@@ -207,3 +207,32 @@ public class Wolf extends Animal {
     }
 }
 ```
+
+子类调用父类的构造器，初始化继承源自父类部分的数据
+
+```
+public Teacher(String name, int age, String skills) {
+    super(name, age);//子类调用父类的构造器，初始化继承源自父类部分的数据
+    this.skills = skills;
+}
+```
+
+在对象中，可直接通过构造器为子类和父类数据赋值
+
+5、this(...)调用兄弟构造器的作用
+
+通过调用兄弟构造器，可重新默认部分参数
+
+this(...)，super(...)不能同时出现，且都要在构造器的第一行使用
+
+```
+public Student(String name, int age, String shoolName) {
+    this.name = name;
+    this.age = age;
+    this.shoolName = shoolName;
+}
+
+public Student(String name, int age) {
+    this(name,age,"xidian");//调用兄弟构造器，可重新默认部分参数
+}
+```
