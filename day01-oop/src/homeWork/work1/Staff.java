@@ -25,11 +25,11 @@ public class Staff {
         this.name = name;
     }
 
-    public String getJob_number() {
+    public String getJobNumber() {
         return jobNumber;
     }
 
-    public void setJob_number(String job_number) {
+    public void setJobNumber(String job_number) {
         this.jobNumber = jobNumber;
     }
 

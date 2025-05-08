@@ -236,3 +236,18 @@ public Student(String name, int age) {
     this(name,age,"xidian");//调用兄弟构造器，可重新默认部分参数
 }
 ```
+
+### 3、多态
+
+多态是在继承/实现情况下的一种现象，表现为：对象多态、行为多态
+
+多态的前提:有**继承/实现**关系；存在父类引用子类对象；**存在方法重写**
+
+```
+Animal a1=new Cat();//编译看左，运行看右
+a1.cry();
+Animal a2=new Dog();//编译看左，运行看右
+a2.cry();
+System.out.println(a1.name);//成员变量没有多态
+System.out.println(a2.name);
+```

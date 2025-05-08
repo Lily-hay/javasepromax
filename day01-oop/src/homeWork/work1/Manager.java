@@ -12,4 +12,12 @@ public class Manager extends Staff{
     public void work() {
         System.out.println("盯着程序员写代码");
     }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
 }
