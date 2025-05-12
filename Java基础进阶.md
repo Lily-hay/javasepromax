@@ -1,6 +1,6 @@
 # Java基础进阶
 
-## 1、面向对象
+## 1、面向对象进阶
 
 ### 1、static
 
@@ -352,6 +352,8 @@ public static final String SCHOOL_NAME="黑马";//常量
 
 关键字:interface
 
+jdk8之前
+
 public interface Name{
 
 常量
@@ -375,3 +377,175 @@ public interface Name{
 1、弥补了类单继承的不足，一个类可以实现多个接口
 
 2、让程序面向接口编程，可以方便灵活的切换各种业务实现（灵活实现解耦合）
+
+接口的继承：一个接口可以同时继承多个接口，可以让实现类只实现一个接口
+
+jdk8开始接口新增三种方法
+
+增强了接口的能力，更便于项目的拓展和维护
+
+```
+//1、默认方法,用default修饰
+//默认用public修饰
+//必须用接口实现类调用
+default void run()
+{
+    go();
+    System.out.println("跑得很快");
+}
+
+//2、私有方法（jdk9开始才有）
+//只能由当前接口里的默认方法或私有方法调用
+private void go()
+{
+    System.out.println("开始跑");
+}
+
+//3、静态方法
+//默认用public修饰
+//接口的静态方法由接口本身调用
+static void inAddr()
+{
+    System.out.println("我爱学Java");
+}
+```
+
+接口的注意事项：
+
+1、一个接口继承多个接口，如果多个接口中存在方法签名冲突，此时不支持多继承
+
+2、一个类实现多个接口，如果多个接口中存在方法签名冲突，此时不支持多实现
+
+3、一个类同时继承父类，实现一个接口，若是，父类和接口中存在方法签名冲突，优先使用父类的方法
+
+4、一个类实现多个接口，多个接口中存在默认方法，可以不冲突，这个类重写该方法即可
+
+### 7、内部类
+
+类中的类
+
+当一个类的内部，包含了一个完整的事物，且没有必要单独设计时
+
+#### 1、成员内部类
+
+特点：无static修饰，属于外部类对象持有，必须有外部类对象，才会有这个成员内部类
+
+成员内部类中，可以直接访问外部类的静态成员，也可以直接访问实例成员
+
+当内部类与外部类有重名时，可以通过 **外部类.this.** 访问外部类成员
+
+创建对象时 **外部类.内部类 对象名称=new 外部类().new 内部类()**
+
+```
+People.Heart h=new People().new Heart();
+h.show();
+```
+
+```
+public class People {
+    private int heartBeat=110;
+    public class Heart
+    {
+        private int heartBeat=95;
+        public void show() {
+            int heartBeat = 80;
+            System.out.println(heartBeat);//80
+            System.out.println(this.heartBeat);//95
+            System.out.println(People.this.heartBeat);//110
+        }
+    }
+
+}
+```
+
+
+
+2、静态内部类
+
+有static修饰
+
+创建对象时 **外部类.内部类 对象名称=new 外部类.内部类()**
+
+不可以直接访问外部类实例成员（没有创建外部类）
+
+3、局部内部类
+
+定义在方法中、代码块、构造器中等局部的类
+
+#### 4、**匿名内部类**
+
+一种特殊局部内部类，匿名，即指程序员不需要为这个类声明
+
+new 类或接口（参数值）
+
+{
+
+类体（一般是方法重写）
+
+}
+
+特点：**匿名内部类本质时一个子类，同时会立即创建一个子类对象**
+
+匿名内部类的名称，当前类名&编号
+
+作用：更方便地创建一个子类对象
+
+```
+public class Test {
+    public static void main(String[] args) {
+        Animal a=new Animal()//匿名内部类
+        {
+            @Override
+            public void cry() {
+                System.out.println("狗汪汪叫---");
+            }
+        };
+        a.cry();
+    }
+}
+abstract class Animal
+{
+    public abstract void cry();
+}
+```
+
+匿名内部类的使用场景
+
+**通常作为一个参数传递给方法**
+
+```
+public class Test2 {
+    public static void main(String[] args) {
+        //匿名内部类的使用场景
+        //方法1
+        Swimming s=new Swimming() {
+            @Override
+            public void swim() {
+                System.out.println("老师游得慢-----");
+            }
+        };
+        go(s);
+        //方法二
+        go(new Swimming() {
+            @Override
+            public void swim() {
+                System.out.println("学生游得快·········");
+            }
+        });
+
+    }
+
+    public static void go(Swimming s)
+    {
+        System.out.println("开始-------");
+        s.swim();
+        System.out.println("结束------");
+    }
+}
+interface Swimming
+{
+    public void swim();
+}
+```
+
+能简化代码

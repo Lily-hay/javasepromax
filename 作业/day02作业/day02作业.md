@@ -65,22 +65,22 @@ public class Main {
 }
 ```
 
- A.  
- g(Cone)  
+ A.  
+ g(Cone)  
        CTwo.f 
-B.  
+B.  
  g(Cone)
        COne.f 
-C.  
+C.  
  g(Ctwo)
        CTwo.f 
-D.  
+D.  
  g(Ctwo)
        COne.f 
 
 
 
-**5. [多选题]关于Java中的多态的前提，有哪几项（ B  ）**
+**5. [多选题]关于Java中的多态的前提，有哪几项（A B C ）**
 
    A. 要有继承或实现
    B. 父类类型的变量引用子类对象
@@ -213,7 +213,7 @@ class Penguin {
 
    A. 抽象类可以被实例化 
    B. 如果一个类中有一个方法被声明为抽象的，那么这个类必须是抽象类 
-   C. 抽象类中的方法必须都是抽象的  
+   C. 抽象类中的方法必须都是抽象的  
    D. 声明抽象类必须带有关键字abstract 
 
 **12.  给定如下Java程序代码，在_横线处加入（A）语句，可以使这段代码编译通过。** 
@@ -247,12 +247,12 @@ public class Test implements Parent {
 
 #### 二、今日单词：
 
-1. 判断左边的对象，是否是右边的类型的关键字：
-2. 调用父类成员关键字：
-3. 定义抽象类的关键字：
-4. 定义常量关键字：
-5. 定义接口关键字：
-6. 实现接口关键字：
+1. 判断左边的对象，是否是右边的类型的关键字：instanceof
+2. 调用父类成员关键字：.super
+3. 定义抽象类的关键字：abstract
+4. 定义常量关键字：final
+5. 定义接口关键字：interface
+6. 实现接口关键字：implements
 
 ------
 
@@ -260,27 +260,29 @@ public class Test implements Parent {
 
 1. 什么是多态？多态的好处和弊端分别是什么？如何解决弊端？
 
-   答：
+   答：在继承/实现关系下，父类引用子类时，体现出的多种对象，多种行为
+
+   好处：可以体现出的多种对象，多种行为  弊端：不能直接调用子类特有的方法
 
 2. abstract不能和哪些关键字共存？为什么？
 
-   答：
+   答：final,因为abstract定义的需要重写，而final修饰的不能重写
 
 3. 抽象类和普通父类有何区别？为什么要定义抽象父类？
 
-   答：
+   答：抽象类不能有对象，为了简化实现
 
 4. final关键字能修饰哪些成员？各自特点是什么？
 
-   答：
+   答：变量、方法、类，都不能被重写，final修饰的类不能被继承
 
 5. 如果调用父类构造器？调用父类构造器的目的？
 
-   答：
+   答：为了初始换父类的部分的变量
 
 6. 接口和抽象类有何区别？
 
-   答：
+   答：接口可以多继承，抽象类只能单继承
 
 ------
 
@@ -289,7 +291,7 @@ public class Test implements Parent {
 ##### 排错题1：
 
 ```java
-// 以下代码是否有问题？为什么？如何解决？
+// 以下代码是否有问题？为什么？如何解决？ 继承的方法冲突，不能多继承
 interface A{
     static void method(){
         System.out.println("A-method");
@@ -321,7 +323,7 @@ class B{
 }
 class C extends B implements A {
    public void pX(){
-      System.out.println(x);
+      System.out.println(x);//x的值模糊，必须指明，A.x/B.this.x
    }
    public static void main(String[] args) {
       new C().pX();
@@ -332,7 +334,7 @@ class C extends B implements A {
 ##### 排错题3：
 
 ```java
-// 以下代码是否有问题？为什么？如何解决？
+// 以下代码是否有问题？为什么？如何解决？ 没问题
 public class Something {
    public static void main(String[] args) {
        Other o = new Other();
