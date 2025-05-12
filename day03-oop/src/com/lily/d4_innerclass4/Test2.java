@@ -1,4 +1,4 @@
-package com.lily.innerclass4;
+package com.lily.d4_innerclass4;
 
 public class Test2 {
     public static void main(String[] args) {

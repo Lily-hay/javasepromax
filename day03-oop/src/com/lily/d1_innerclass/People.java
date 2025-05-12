@@ -1,4 +1,4 @@
-package com.lily.innerclass;
+package com.lily.d1_innerclass;
 
 public class People {
     private int heartBeat=110;
