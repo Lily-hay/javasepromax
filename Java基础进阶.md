@@ -569,3 +569,88 @@ interface Swimming
 **通常用来表示一组信息，然后作为参数进行传输**
 
 常量做信息分类也比较优雅，但缺乏约束；枚举做信息标志和分类，参数值受到约束，最好的信息标志和分类的理想方案
+
+### 9、泛型
+
+定义类、接口、方法时，同时声明了一个或多个类型变量（<E>），称为泛型类、泛型接口、泛型方法，统称泛型
+
+如ArrayList<E>
+
+作用：在编译阶段约束所能操作的数据类型，并进行自动检查，**可以避免强制类型转换以及可能出现的异常**
+
+泛型的本质：把具体类型作为参数传给类型变量
+
+泛型变量一般用大写字母E、T、K、V
+
+通配符： ？使用泛型时代表一切类型
+
+泛型的上下限： ? extends  父类
+
+​			    ？super    
+
+泛型的擦除问题和注意问题：泛型是工作在编译阶段的，一旦程序编译为class文件，class文件中就不存在泛型；泛型不能直接支持基本数据类型，只能支持对象类型（引用）
+
+### 10、API
+
+Java已经写好的程序
+
+object类是Java所有类的祖宗类
+
+object    toString，equals（默认比较两个类的地址）给子类重写
+
+objects 工具类 提供的equals 比较两个对象是否相同，比起改写的object.equals,更安全，更可靠，推荐使用
+
+包装类
+
+将基本数据类型包装成对象
+
+int          Integer
+
+byte       Byte
+
+short     Short
+
+long      Long
+
+char	Character
+
+float	Float
+
+double	Double
+
+boolean	Boolean
+
+自动装箱机制
+
+自动拆箱机制
+
+```
+//认识包装类
+int a=12;
+//1、把基本类型包装为对象
+Integer it1=Integer.valueOf(a);//手动包装
+System.out.println(it1);
+
+//2、自动装箱机制，基本类型的对象可以直接变成对象
+Integer it2=127;
+Integer it3=127;
+System.out.println(it2==it3);//true  -128到127提供了缓存，调用的是同一个对象,超过这个范围创建的是新对象
+Integer it4=128;
+Integer it5=128;
+System.out.println(it4==it5);//false
+
+//3、自动拆箱机制，包装类的对象可以直接给到基本类型
+Integer it6=15;
+int b=it6;
+
+//Java为包装类提供了新功能
+//1、包装类可以把基本类型的数据转为字符串
+Integer it7=18;
+String rs=it7.toString();
+System.out.println(rs+2);
+//2、把字符串数据转换为对应的基本数据类型
+String re2="18.8";
+Double s=Double.parseDouble(re2);
+System.out.println(re2);
+Double d=Double.valueOf(re2);
+```
