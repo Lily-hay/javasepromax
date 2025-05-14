@@ -654,3 +654,65 @@ Double s=Double.parseDouble(re2);
 System.out.println(re2);
 Double d=Double.valueOf(re2);
 ```
+
+## 2、API
+
+### 1、StringBuilder
+
+可代表字符串对象，**相当于一个容器**，里面装的字符串可以改变，**就是用来操作字符串的**
+
+好处:比String**更适合做字符串的修改操作，效率会更高，代码更简洁**
+
+```
+//1、创建对象
+StringBuilder s1 = new StringBuilder("黑马");
+System.out.println(s1);
+
+//2、拼接内容
+s1.append("java").append(666).append("ture");
+System.out.println(s1);
+
+//3、反转内容
+s1.reverse();
+System.out.println(s1);
+
+//4、长度
+s1.length();
+
+//5、将StringBuilder对象转换为String对象
+//StringBuilder是拼接字符串的手段，String是开放中的目的，开放中多数要String对象来接
+String s2=s1.toString();
+System.out.println(s2);
+```
+
+在需要多次拼接时，StringBuilder效率更高String用+=拼接时，会创建多个对象
+
+StringBuilder与StringBuffer用法相同，但StringBuilder线程不安全，StringBuffer安全
+
+### 2、StringJoiner
+
+操作字符串，也可看作是一个容器，，内容可变
+
+好处：不仅能提高字符串都操作效率，并且**在有些场景下使用它操作字符串，代码会更简洁**
+
+```
+public static String getArrayData(int[] arr)
+    {
+        
+        StringJoiner s1 = new StringJoiner(",","[","]");//参数分别为中间的拼接符、开始、结束
+        for (int i = 0; i < arr.length; i++) {
+
+            s1.add(Integer.toString(arr[i]));
+        }
+        return s1.toString();
+    }
+}
+```
+
+### 3、Math、Runtime、System
+
+Runtime可以获知虚拟机的内存以及电脑可用的
+
+System.currnetTime.Mills时间毫秒值
+
+### 4、BigDecimal
