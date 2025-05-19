@@ -814,3 +814,84 @@ System.out.println(duration.toNanos());
 ```
 System.out.println(duration.toDays()+"天"+duration.toHoursPart()+"时"+duration.toSecondsPart()+"分"+duration.toMillisPart()+"秒");
 ```
+
+### Arrays
+
+操作数组的工具类
+
+```
+//掌握操作数组Arrays类的常用方法
+int[] arr={11,5,22,67,2};
+
+//1、返回数组内容
+String result= Arrays.toString(arr);
+System.out.println(result);
+
+//2.得到数组内容的一个新数组，并返回新数组
+int[] arr2=Arrays.copyOfRange(arr,1,4);
+System.out.println(Arrays.toString(arr2));
+
+//3、扩容,长度增加
+int[] arr3=Arrays.copyOf(arr,10);
+System.out.println(Arrays.toString(arr3));
+
+double[] scores={100,78,90,98.5,88};
+//4、修改数组中每个数据并存入
+Arrays.setAll(scores, new IntToDoubleFunction() {
+    @Override//匿名内部类
+    public double applyAsDouble(int index) {
+        return scores[index]+=10;
+    }
+
+});
+System.out.println(Arrays.toString(scores));
+
+//5、排序
+Arrays.sort(scores);//从小到大
+System.out.println(Arrays.toString(scores));
+```
+
+
+
+对类进行排序的两种方法
+
+方法一：先在对象类中实现Comparable接口，再重写CompareTo方法
+
+方法二：在调用Arrays.sort()方法时，直接声明匿名内部类
+
+```
+Arrays.sort(students, new Comparator<Student>() {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getHeight()> o2.getHeight())
+            return 1;
+        else if(o1.getHeight()<o2.getHeight())
+            return -1;
+        return 0;
+    }
+});
+```
+
+### Lambada表达式
+
+**简化匿名内部类的代码写法**
+
+Lambada表达式只能简化**函数式接口**的匿名内部类（仅有一个抽样方法的接口）
+
+```
+Swimming s2=()->{
+    System.out.println("老师跑得快------");
+};
+```
+
+Lambada的省略规则
+
+**参数类型可以省略不写**
+
+**只有一个参数时**，参数类型可以省略不写，**同时()也可以省略**
+
+如果Lambada表达式中的**方法体只有一行代码**，可以省略大括号不写，同时省略分号，若这行代码是return，也要省略return不写
+
+```
+Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight()));//Lamaba表达式最终简化写法
+```
