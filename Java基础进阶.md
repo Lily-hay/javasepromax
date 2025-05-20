@@ -716,3 +716,182 @@ Runtime可以获知虚拟机的内存以及电脑可用的
 System.currnetTime.Mills时间毫秒值
 
 ### 4、BigDecimal
+
+处理浮点数的对象
+
+public BihDecimal(double val)//只能处理大数据问题，不能处理精度问题，不推荐使用
+
+public BihDecimal(String val)//可以处理精度问题
+
+```
+double a=0.1;
+double b=0.2;
+//直接计算
+double c=a+b;
+System.out.println(c);//0.30000000000000004精度失真
+
+//1、创建对象
+BigDecimal a1=new BigDecimal(Double.toString(a));
+BigDecimal b1=new BigDecimal(Double.toString(b));
+
+//2、用BigDecimal作为手段计算
+BigDecimal c1=a1.add(b1);
+
+//3、返回double
+double c11=c1.doubleValue();
+System.out.println(c11);
+```
+
+5、ZoneId,ZoneDateTime
+
+时区和时区时间
+
+```
+Set<String> availableZoneIds = ZoneId.getAvailableZoneIds();//所有时区
+System.out.println(availableZoneIds);
+
+ZoneId an=ZoneId.of("America/Cuiaba");
+ZonedDateTime dt=ZonedDateTime.now(an);//拿到时间
+
+System.out.println(dt);
+
+ZonedDateTime st=ZonedDateTime.now(Clock.systemDefaultZone());//拿到世界标准时间
+System.out.println(st);
+```
+
+LocalDate年月日
+
+LocalTime时分秒
+
+LocalDateTime年月日时分秒
+
+5、Instant
+
+Instant.now()//
+
+获取从1970年1月1日的总秒数和不够一秒的纳秒数
+
+6、DateTimeFormatter时间格式转换
+
+```
+DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss EEE a");
+LocalDateTime ldt=LocalDateTime.now();
+System.out.println(ldt);
+String result=ldt.format(dtf);
+System.out.println(result);
+//另一种写法
+String result2=dtf.format(ldt);
+System.out.println(result2);
+
+//其他时间格式转换
+String datetime="2025-11-16 12:12:12";
+DateTimeFormatter dtf2=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+LocalDateTime ldt2=LocalDateTime.parse(datetime,dtf2);
+System.out.println(ldt2);
+```
+
+7、Period，Duration
+
+Period计算两个时间间隔的年月日数；Duration**计算两个时间相差的天数、小时数、分数、秒数、纳秒数**
+
+```
+LocalDateTime start=LocalDateTime.of(2025,3,20,12,28,10);
+LocalDateTime end=LocalDateTime.of(2025,3,20,12,29,11);
+//1、得到Duration对象
+Duration duration= Duration.between(start,end);
+//2、计算两个时间间隔
+System.out.println(duration.toDays());
+System.out.println(duration.toHours());
+System.out.println(duration.toMinutes());
+System.out.println(duration.toMillis());
+System.out.println(duration.toSeconds());
+System.out.println(duration.toMillis());
+System.out.println(duration.toNanos());
+```
+
+若要显示间隔多少小时多少分多少秒
+
+```
+System.out.println(duration.toDays()+"天"+duration.toHoursPart()+"时"+duration.toSecondsPart()+"分"+duration.toMillisPart()+"秒");
+```
+
+### Arrays
+
+操作数组的工具类
+
+```
+//掌握操作数组Arrays类的常用方法
+int[] arr={11,5,22,67,2};
+
+//1、返回数组内容
+String result= Arrays.toString(arr);
+System.out.println(result);
+
+//2.得到数组内容的一个新数组，并返回新数组
+int[] arr2=Arrays.copyOfRange(arr,1,4);
+System.out.println(Arrays.toString(arr2));
+
+//3、扩容,长度增加
+int[] arr3=Arrays.copyOf(arr,10);
+System.out.println(Arrays.toString(arr3));
+
+double[] scores={100,78,90,98.5,88};
+//4、修改数组中每个数据并存入
+Arrays.setAll(scores, new IntToDoubleFunction() {
+    @Override//匿名内部类
+    public double applyAsDouble(int index) {
+        return scores[index]+=10;
+    }
+
+});
+System.out.println(Arrays.toString(scores));
+
+//5、排序
+Arrays.sort(scores);//从小到大
+System.out.println(Arrays.toString(scores));
+```
+
+
+
+对类进行排序的两种方法
+
+方法一：先在对象类中实现Comparable接口，再重写CompareTo方法
+
+方法二：在调用Arrays.sort()方法时，直接声明匿名内部类
+
+```
+Arrays.sort(students, new Comparator<Student>() {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getHeight()> o2.getHeight())
+            return 1;
+        else if(o1.getHeight()<o2.getHeight())
+            return -1;
+        return 0;
+    }
+});
+```
+
+### Lambada表达式
+
+**简化匿名内部类的代码写法**
+
+Lambada表达式只能简化**函数式接口**的匿名内部类（仅有一个抽样方法的接口）
+
+```
+Swimming s2=()->{
+    System.out.println("老师跑得快------");
+};
+```
+
+Lambada的省略规则
+
+**参数类型可以省略不写**
+
+**只有一个参数时**，参数类型可以省略不写，**同时()也可以省略**
+
+如果Lambada表达式中的**方法体只有一行代码**，可以省略大括号不写，同时省略分号，若这行代码是return，也要省略return不写
+
+```
+Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight()));//Lamaba表达式最终简化写法
+```
