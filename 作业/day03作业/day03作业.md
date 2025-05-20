@@ -44,7 +44,7 @@
 
    D. 运行时报异常
 
-##### 5. 【多选题】对于泛型类class A<T> { … }，T在A类里可以用作不同的地方，在A类类体内，下面语句正确的有（）
+##### 5. 【多选题】对于泛型类class A<T> { … }，T在A类里可以用作不同的地方，在A类类体内，下面语句正确的有（ACDFD）
 
 ```java
 A. T x;
@@ -147,7 +147,7 @@ E.
 
    D.要想继承Object类，必须使用extends关键字标识继承关系，否则不会实现继承
 
-##### 10. 在Java中，Object类是所有类的父亲，用户自定义类默认扩展自Object类，下列选项中不属于Object类的方法的是（）
+##### 10. 在Java中，Object类是所有类的父亲，用户自定义类默认扩展自Object类，下列选项中不属于Object类的方法的是（C）
 
    A.equals(Object obj)
 
@@ -183,9 +183,9 @@ E.
 
 #### 二、今日单词：
 
-1. 枚举关键字：
-2. Object类中各个的方法名称：
-3. JDK八种包装类类名：
+1. 枚举关键字：enum
+2. Object类中各个的方法名称：toString,equals
+3. JDK八种包装类类名：Inerger,Byte,Short,Long,Character,Float,Double,Boolean
 
 ------
 
@@ -193,19 +193,21 @@ E.
 
 1. 静态内部类的加载时机？
 
-   答：
+   答：创建对象时
 
 2. 什么是枚举？枚举同静态常量有何区别？
 
-   答：
+   答：它是一种特殊的类，第一行必须罗列一些名称，这些名称都是常量，用于记住一些对象
+
+   区别：枚举类作为参数传入时，限定了类别，不会被随便使用，而静态变量并没能作出限制
 
 3. 什么是泛型？有几种泛型定义方式？
 
-   答：
+   答：在类、借口、方法后同时声明一个或多个类型变量，三种
 
 4. 泛型注意事项什么？
 
-   答：
+   答：反省不能直接智齿基本数据类型，只支持对象
 
 5. 什么是浅克隆？什么是深克隆？
 
@@ -213,7 +215,7 @@ E.
 
 6. JDK提供的包装类有什么作用？
 
-   答：
+   答：可以将基本数据类型包装成对象
 
 
 ------
@@ -223,7 +225,7 @@ E.
 ##### 排错题1：
 
 ```java
-// 以下代码是否有问题？为什么？如何解决？
+// 以下代码是否有问题？为什么？如何解决？//没有问题
 public class Demo1 { 
     int c = 30;
     class Inner{
@@ -244,21 +246,21 @@ public class Demo1 {
 ##### 排错题2：
 
 ```java
-// 以下代码运行结果是什么？为什么是这个结果？
+// 以下代码运行结果是什么？为什么是这个结果？//因为-128~127之间的值提供了缓存，创建的是同一个对象，而这些以外的创建新的对象
 public static void main(String[] args) {
   Integer i = 100;
   Integer i2 = 100;
-  System.out.println(i == i2);  
+  System.out.println(i == i2);  //True
   Integer i3 = 200;
   Integer i4 = 200;
-  System.out.println(i3 == i4);
+  System.out.println(i3 == i4);//False
 }
 ```
 
 ##### 排错题3：
 
 ```java
-// 以下代码是否有问题？为什么？如何解决？
+// 以下代码是否有问题？为什么？如何解决？//没问题
 public class Demo1 {
     public static void main(String[] args) {
         Inter i = new Inter() {
@@ -293,7 +295,7 @@ interface Inter{
 排错题4：
 
 ```java
-// 以下代码是否有问题？为什么？如何解决？
+// 以下代码是否有问题？为什么？如何解决？//不行，不能继承
 public class Demo1 { 
     private class Inner extends Demo1{
         public Inner(){
@@ -401,7 +403,6 @@ class A {
 5、定义一个静态方法：根据标号获取付款名称
 
 6、使用枚举优化上述的if...else代码
-
 
 
 
