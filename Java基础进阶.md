@@ -657,7 +657,9 @@ Double d=Double.valueOf(re2);
 
 ## 2、API
 
-### 1、StringBuilder
+### 时间日期
+
+1、StringBuilder
 
 可代表字符串对象，**相当于一个容器**，里面装的字符串可以改变，**就是用来操作字符串的**
 
@@ -689,7 +691,7 @@ System.out.println(s2);
 
 StringBuilder与StringBuffer用法相同，但StringBuilder线程不安全，StringBuffer安全
 
-### 2、StringJoiner
+2、StringJoiner
 
 操作字符串，也可看作是一个容器，，内容可变
 
@@ -709,13 +711,13 @@ public static String getArrayData(int[] arr)
 }
 ```
 
-### 3、Math、Runtime、System
+3、Math、Runtime、System
 
 Runtime可以获知虚拟机的内存以及电脑可用的
 
 System.currnetTime.Mills时间毫秒值
 
-### 4、BigDecimal
+4、BigDecimal
 
 处理浮点数的对象
 
@@ -872,7 +874,7 @@ Arrays.sort(students, new Comparator<Student>() {
 });
 ```
 
-### Lambada表达式
+### Lambda表达式
 
 **简化匿名内部类的代码写法**
 
@@ -894,4 +896,53 @@ Lambada的省略规则
 
 ```
 Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight()));//Lamaba表达式最终简化写法
+```
+
+### 方法引用
+
+静态方法引用
+
+如果Lambda表达式里**只有一个静态方法**，并且**前后参数一致**，就可以使用静态方法引用
+
+```
+Arrays.sort(students, ( o1,  o2)-> Student.compareByHeight(o1,o2));
+```
+
+```
+Arrays.sort(students,  Student::compareByHeight);//静态引用简化形式
+```
+
+Student.compareByHeight(o1,o2)方法对Double.compare(o1.getHeight(),o2.getHeight())进行了封装
+
+实例方法引用
+
+```
+Test2 t=new Test2();
+Arrays.sort(students,  t::compare);
+```
+
+特例类型的方法引用
+
+如果一个Lamba表达式里**只调用一个实例方法**，并且前面参数列表中的**第一个参数是作为方法的主调**，后面的所有参数都是作为该实例方法入参的，则可以使用特定类型的方法引用
+
+```
+Arrays.sort(names,( o1, o2)->o1.compareToIgnoreCase(o2));
+Arrays.sort(names,String::compareToIgnoreCase);
+```
+
+构造器引用
+
+如果某个Lambda表达式里只是在创建对象，并且前后参数一致，就可以使用构造器引用
+
+```
+/*Create c1=new Create() {
+    @Override
+    public Car createCar(String name) {
+        return new Car(name);
+    }
+};*/
+//简化
+//Create c1=(String name)->new Car(name);
+//再简化
+Create c1=Car::new;
 ```
