@@ -1,4 +1,4 @@
-package com.lily.method_reference;
+package com.lily.d3_method_reference;
 
 public class Test4 {
     public static void main(String[] args) {

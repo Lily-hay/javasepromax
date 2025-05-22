@@ -1,4 +1,4 @@
-package com.lily.method_reference;
+package com.lily.d3_method_reference;
 
 public class Student implements Comparable<Student>{
     private String name;

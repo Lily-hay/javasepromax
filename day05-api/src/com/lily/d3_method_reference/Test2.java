@@ -1,11 +1,12 @@
-package com.lily.method_reference;
+package com.lily.d3_method_reference;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.IntToDoubleFunction;
 
-public class Test1 {
+public class Test2 {
     public static void main(String[] args) {
-        //静态方法引用
+        //实例方法引用
         double[] scores={100,78,90,98.5,88};
         //4、修改数组中每个数据并存入
         Arrays.setAll(scores, new IntToDoubleFunction() {
@@ -49,8 +50,14 @@ public class Test1 {
 
         //Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight()));//Lamaba表达式最终简化写法
         //Arrays.sort(students, ( o1,  o2)-> Student.compareByHeight(o1,o2));
-        Arrays.sort(students,  Student::compareByHeight);//静态引用简化形式
+        //Arrays.sort(students,  Student::compareByHeight);//静态引用简化形式
+        Test2 t=new Test2();
+        Arrays.sort(students,  t::compare);
+
 
         System.out.println(Arrays.toString(students));
+    }
+    public int compare(Student o1, Student o2) {
+        return Double.compare(o1.getHeight(),o2.getHeight());
     }
 }

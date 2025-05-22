@@ -1,4 +1,4 @@
-package com.lily.so;
+package com.lily.d4_so;
 
 public class Demo1 {
     public static void main(String[] args) {
