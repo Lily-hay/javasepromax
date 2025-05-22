@@ -657,7 +657,7 @@ Double d=Double.valueOf(re2);
 
 ## 2、API
 
-### 时间日期
+### 1、时间日期
 
 1、StringBuilder
 
@@ -817,7 +817,7 @@ System.out.println(duration.toNanos());
 System.out.println(duration.toDays()+"天"+duration.toHoursPart()+"时"+duration.toSecondsPart()+"分"+duration.toMillisPart()+"秒");
 ```
 
-### Arrays
+### 2、Arrays
 
 操作数组的工具类
 
@@ -874,7 +874,7 @@ Arrays.sort(students, new Comparator<Student>() {
 });
 ```
 
-### Lambda表达式
+### 3、Lambda表达式
 
 **简化匿名内部类的代码写法**
 
@@ -898,7 +898,7 @@ Lambada的省略规则
 Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight()));//Lamaba表达式最终简化写法
 ```
 
-### 方法引用
+### 4、方法引用
 
 静态方法引用
 
@@ -945,4 +945,59 @@ Arrays.sort(names,String::compareToIgnoreCase);
 //Create c1=(String name)->new Car(name);
 //再简化
 Create c1=Car::new;
+```
+
+## 3、异常
+
+Error:代表系统级错误，不用管
+
+Exception:异常，通常用Exception以及它的孩子来封装程序出现的问题
+
+运行时异常：RuntimeException及其子类，编译时不会出现，运行时出现
+
+数组越界异常、空指针异常、数字操作异常(除零)、类型转换异常等
+
+编译时异常：编译阶段就会出现错误提醒的(如日期解析异常)
+
+1、异常的作用
+
+用来查询系统Bug的关键参考信息
+
+可以作为方法内部的一种特征返回值，以便通知上层调用者底层的的执行情况
+
+2、自定义异常
+
+自定义运行时异常：继承RuntimeException,重写前两个方法，常使用
+
+编译时异常：继承Exception,重写前两个方法
+
+```
+public class AgeIllegalRuntimeException extends RuntimeException{
+    public AgeIllegalRuntimeException() {
+    }
+
+    public AgeIllegalRuntimeException(String message) {
+        super(message);
+    }
+}
+```
+
+```
+public static void main(String[] args) {
+    try {
+        save(200);
+    } catch (AgeIllegalException e) {
+        throw new RuntimeException(e);
+    }
+
+}
+public static void save(int age) throws AgeIllegalException {
+    //throw方法内使用，创建异常抛出去
+    //throws方法上使用，异常抛给调用者
+    if(age<0||age>150)
+    {
+        throw new AgeIllegalException("/age is wrong");
+    }
+    System.out.println("年龄保存成功！");
+}
 ```
