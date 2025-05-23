@@ -7,6 +7,7 @@ public class LambadaTest {
             public void swim() {
                 System.out.println("学生跑得快~~~~~~~");
             }
+
         };
         s1.swim();
         Swimming s2=()->{
@@ -18,6 +19,7 @@ public class LambadaTest {
 
 interface Swimming{
     void swim();
+    String toString();
 }
 abstract class Animal{
 

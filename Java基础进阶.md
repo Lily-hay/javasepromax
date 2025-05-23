@@ -900,6 +900,8 @@ Arrays.sort(students, ( o1,  o2)-> Double.compare(o1.getHeight(),o2.getHeight())
 
 ### 4、方法引用
 
+**方法引用**（Method Reference）是 Java 8 引入的一种简洁语法，用于**替代 Lambda 表达式**，当 Lambda 的**实现就是调用某个已有方法**时，方法引用能让代码更简洁、易读。
+
 静态方法引用
 
 如果Lambda表达式里**只有一个静态方法**，并且**前后参数一致**，就可以使用静态方法引用
@@ -1019,3 +1021,151 @@ public static void save(int age) throws AgeIllegalException {
     }
     System.out.println("年龄保存成功！");
 ```
+3、开发中对于异常的处理
+
+![793ba678cdc110a81c7aae5f0e4b66e](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\793ba678cdc110a81c7aae5f0e4b66e.jpg)
+
+## 4、集合
+
+### 1、集合体系结构
+
+Collection集合体系 单列集合的祖宗接口         
+
+Map 双列集合，每个元素包含两个值(键值对)
+
+![e01083117ef9d9c0e3d81ed1d8f4dd2](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\e01083117ef9d9c0e3d81ed1d8f4dd2.jpg)
+
+
+
+### 2、Collection的常用方法
+
+```
+//2、清空集合
+//list.clear();
+//System.out.println(list);
+
+//3、判断集合是否为空
+System.out.println(list.isEmpty());
+
+//4、直接删除集合中某个元素
+System.out.println(list.remove("张无忌"));
+System.out.println(list);
+
+//5、判断是否包含某个数据
+System.out.println(list.contains("java1"));
+
+//6、获取集合的大小
+System.out.println(list.size());
+
+//7、把集合转为数组
+Object[] array=list.toArray();//防止有其他类型的数据
+System.out.println(Arrays.toString(array));
+//拓展
+String[] array1=list.toArray(String[]::new);
+System.out.println(Arrays.toString(array1));
+
+//拓展，将别人集合加到自己这里
+Collection<String> c1=new ArrayList<>();
+c1.add("java1");
+c1.add("java2");
+Collection<String> c2=new ArrayList<>();
+c2.add("java2");
+c2.add("java3");
+c1.addAll(c2);
+System.out.println(c1);
+```
+
+### 3、Collection的遍历方式
+
+**迭代器是用来遍历集合的专用方式(数组没有)**
+
+```
+Iterator<String> it=list.iterator();
+while(it.hasNext())
+{
+    String ele=it.next();
+    System.out.println(ele);
+```
+
+增强for循环（本质是迭代器）
+
+既可以遍历集合，也可以遍历数组
+
+```
+for (String s : list) {
+    System.out.println(s);
+}
+
+int[] ages={12,24,45,6};
+for (int age : ages) {
+    System.out.println(age);
+
+}
+```
+
+Lambda表达式遍历
+
+```
+list.forEach(new Consumer<String>() {
+
+    @Override
+    public void accept(String s) {
+        System.out.println(s);
+    }
+});
+
+list.forEach(( s)->System.out.println(s));
+
+list.forEach(System.out::println);
+```
+
+遍历的并发修改异常
+
+遍历集合时，同时删除数据
+
+仅可用迭代器遍历，其他两种底层也是迭代器，不可解决bug
+
+用迭代器自己的删除方法删除数据，不能用集合的方法删
+
+能用for循环删除时，从后遍历删除或者删除之后i---
+
+```
+Iterator<String> it=list1.iterator();
+while(it.hasNext()){
+    String ele=it.next();
+    if(ele.contains("枸杞"))
+    {
+        it.remove();
+    }
+}
+```
+
+### 4、List集合
+
+支持索引，可用for循环遍历
+
+特有方法
+
+```
+//2、给某个位置插入数据
+list.add(2,"小周");
+System.out.println(list);
+
+//3、根据索引删除数据
+System.out.println(list.remove(2));
+
+//4、修改索引位置数据
+list.set(2,"小花");
+System.out.println(list);
+
+//5、根据索引取数据
+System.out.println(list.get(1));
+```
+
+1、ArrayList
+
+基于数组实现，根据地址和索引值查数据
+
+根据索引查数据快，适合于数据量不大，不频繁增删数据
+
+底层原理：一开始add时创建一个长度为10的数组，后面长度不够，扩容为原来长度的1.5倍，再把数据移过来，如果加入的数据大于1.5倍，则扩容到总数据长度
