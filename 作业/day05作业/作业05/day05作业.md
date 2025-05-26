@@ -239,7 +239,7 @@ public class Demo2 {
 ##### 排错题3：
 
 ```java
-// 以下代码是否有问题？为什么？//不对，接口里的方法都要重写
+// 以下代码是否有问题？为什么？//
 public class Demo1 {
     public static void main(String[] args) {
         Inter i = new Inter() {
@@ -264,7 +264,7 @@ interface Inter{
 
 上面lambda表达式的书写是否正确并说明原因？并给出正确的代码！
 
-答：
+答：show(( a, b)->a+b);参数类型要么都写，要么都不写
 
 ------
 
