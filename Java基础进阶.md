@@ -1169,3 +1169,35 @@ System.out.println(list.get(1));
 根据索引查数据快，适合于数据量不大，不频繁增删数据
 
 底层原理：一开始add时创建一个长度为10的数组，后面长度不够，扩容为原来长度的1.5倍，再把数据移过来，如果加入的数据大于1.5倍，则扩容到总数据长度
+
+2、LinkedList集合
+
+基于双链表实现，查询慢、增删较快，但**对首尾元素增删改查的速度是极快的**
+
+方便栈和队列的操作
+
+```
+//1、双链表实现队列
+LinkedList<String> queue=new LinkedList<>();
+queue.addLast("第一个人");
+queue.addLast("第二个人");
+queue.addLast("第三个人");
+queue.addLast("第四个人");
+System.out.println(queue);
+System.out.println(queue.removeFirst());
+System.out.println(queue.removeFirst());
+System.out.println(queue.removeFirst());
+System.out.println(queue);
+
+//2、实现栈
+LinkedList<String> stack=new LinkedList<>();
+stack.addFirst("第一颗子弹");//push
+stack.addFirst("第二颗子弹");
+stack.addFirst("第三颗子弹");
+stack.addFirst("第四颗子弹");
+System.out.println(stack);
+System.out.println(stack.removeFirst());//pop
+System.out.println(stack.removeFirst());
+System.out.println(stack.removeFirst());
+System.out.println(stack);
+```
