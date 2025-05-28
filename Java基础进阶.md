@@ -1201,3 +1201,81 @@ System.out.println(stack.removeFirst());
 System.out.println(stack.removeFirst());
 System.out.println(stack);
 ```
+
+### 5、set集合
+
+无序、**不重复**、无索引
+
+
+
+1、HashSet 
+
+无序、无索引，不重复
+
+哈希值：对象的随机数，不同对象的哈希值一般不同，但也会出现哈希碰撞
+
+**哈希表是一种增删改查性能都较好的结构**
+
+jdk8之前结构为数组+链表
+
+jdk8之后为：数组+链表+红黑树（链表长度大于8）
+
+二叉查找树：**当数据已经排好了之后，导致查询性能更单链表一样，速度慢**
+
+平衡二叉树：在满足二叉查找树条件下，减少树的深度，改善查询性能，红黑树也是一种平衡二叉树
+
+HashSet默认不能对内容一样的的不同对象去重，需要重写haseCode()方法和equals方法，在比较时是内容生成哈希值，而不是整个对象
+
+需要内容和哈希值都相同
+
+
+
+2、LinkedHashSet **有序**、无索引、不重复
+
+依然是基于哈希表（数组、链表、红黑树）实现
+
+但是，**它的每个元素都额外多了一个双链表的机制来记住前后元素的位置**，因此有序
+
+3、TreeSet **可排序**、无索引、不重复
+
+底层是基于红黑树实现的
+
+同样不可直接对对象进行排序，可继承Compare接口，重写compareTo方法或TreeSet自带的匿名接口
+
+### 6、Collection的其他知识
+
+1、可变参数
+
+一种特殊形参，定义在方法、构造器的形参列表中，格式：**数据类型...参数名称**
+
+好处：不传参数给它，可以传参数，可以传一个、也可以传多个，接受数据非常灵活
+
+本质：在方法内部本质是一个数组
+
+注意：可变参数在形参列表中只能出现一个！必须放在形参列表的最后！
+
+2、Collections工具类
+
+```
+//1、
+Collections.addAll(names,"张无忌","小张","赵敏");
+
+//2、
+Collections.shuffle(names);
+System.out.println(names);
+//3、
+Collections.sort(list,((o1,o2)->Double.compare(o1.getHeight(),o2.getHeight())));
+```
+
+新生成getter与setter，构造器的方法
+
+```
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+```

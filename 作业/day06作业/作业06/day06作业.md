@@ -77,7 +77,7 @@ class Utils {
 
    D. 编译报错
 
-##### 5. 下面代码，为使代码通过编译，需要在哪一行加入代码 `throws Exception` （A） 
+##### 5. 下面代码，为使代码通过编译，需要在哪一行加入代码 `throws Exception` （D） 
 
 ```java
  public class Demo4  {
@@ -275,7 +275,7 @@ System.out.println(al);
 
 3. 集合的体系结构中List接口和Set接口有和区别？
 
-   答：List接口有序，不重复，有索引，Set接口无序，重复，屋索引
+   答：List接口有序，可重复，有索引，Set接口无序，不重复，无索引
 
 4. 什么是迭代器？什么是并发修改异常？如何解决？
 
@@ -441,7 +441,6 @@ public class Demo1 {
 2、提示信息应该放Entry类中(因为是直接和用户进行交互)
 
 3、可以考虑自定义异常
-
 
 
 
