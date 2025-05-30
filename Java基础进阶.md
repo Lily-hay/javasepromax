@@ -1267,11 +1267,11 @@ System.out.println(names);
 Collections.sort(list,((o1,o2)->Double.compare(o1.getHeight(),o2.getHeight())));
 ```
 
-新生成getter与setter，构造器的方法
+新生成getter与setter，构造器的方法，
 
 ```
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Data;//包含(无参+get+set+equals+hashCode+toString)
 import lombok.NoArgsConstructor;
 
 
@@ -1279,3 +1279,126 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 ```
+
+### 7、Map集合
+
+键值对集合：键不能重复，值可以重复
+
+Map系列集合的特点都是由键决定的
+
+```
+Map<String,Integer> map = new HashMap<>();
+map.put("Java入门",1);
+map.put("iphone16pro",1);
+map.put("xiaomi15",5);
+map.put("doal",2);
+map.put("xiaomi15",10);
+System.out.println(map);
+```
+
+常用方法
+
+```
+//1、获取集合长度
+    System.out.println(map.size());
+
+    //2、清空集合
+    /*map.clear();
+    System.out.println(map);*/
+
+    //3、格局键获取相应的值
+    System.out.println(map.get("xiaomi15"));
+    map.get("xiaomi");
+
+    //4、根据键删除整个数据，返回被删除对象对应的值
+    System.out.println(map.remove("xiaomi15"));
+    System.out.println(map);
+
+    //5、判断键是否包含某个值
+    System.out.println(map.containsKey("xiaomi15"));
+    System.out.println(map.containsKey("doal"));
+
+    //6、判断值包含某个值
+    System.out.println(map.containsValue(1));
+    System.out.println(map.containsValue(2));
+
+    //7、判断集合是否为空
+    System.out.println(map.isEmpty());
+
+    //8、获取Map的全部键，到一个Set集合
+    Set<String> keys=map.keySet();
+    System.out.println(keys);
+    
+    //9、获取Map的所有值到一个Collection集合
+    Collection<Integer> values=map.values();
+    System.out.println(values);
+}
+```
+
+遍历方式
+
+```
+//1、键找值
+ Map<String,Integer> map = new HashMap<>();
+ map.put("Java入门",1);
+ map.put("iphone16",1);
+ map.put("小米",5);
+ map.put("布偶",2);
+ map.put("华为",10);
+ Set<String> keys = map.keySet();
+ for (String key : keys) {
+     int value = map.get(key);
+     System.out.println(key + ":" + value);
+ }
+
+ //2、键值对,先将Map集合转为Set集合，将键值封装成一个整体的Entray对象
+ Set<Map.Entry<String,Integer>> entries = map.entrySet();
+ for (Map.Entry<String, Integer> entry : entries) {
+     String key=entry.getKey();
+     int value=entry.getValue();
+     System.out.println(key + ":" + value);
+ }
+ 
+ //3、Lambda
+/* map.forEach(new BiConsumer<String, Integer>() {
+     @Override
+     public void accept(String key, Integer value) {
+         System.out.println(key + ">>>" + value);
+     }
+ });*/
+ map.forEach((k,v)->{
+     System.out.println(k + ">>>" + v);
+ });
+```
+
+HashMap
+
+无序、不重复、无索引
+
+对象要通过HashCode和Equals方法去重保证唯一性
+
+LinkedHashMap
+
+有序、不重复、无索引
+
+实际上：原来学习的LinkedHashSet集合的底层原理就是LinkedHashMap
+
+TreeMap
+
+红黑树排序
+
+集合嵌套
+
+如Map里的值可以存多个，存成一个集合
+
+## 5、Stream
+
+新的API，可以用于操作集合或者数组中哦的数据
+
+结合了大量Lambda表达式的语法风格，代码更简洁、可读性更好
+
+步骤：1、得到集合或数组的Stream流
+
+​	    2、调用Steam流对数据进行操作
+
+​	    3、获取Stream的处理结果	
