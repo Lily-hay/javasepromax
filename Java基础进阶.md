@@ -1402,3 +1402,258 @@ TreeMap
 ​	    2、调用Steam流对数据进行操作
 
 ​	    3、获取Stream的处理结果	
+
+1、获取Stream流
+
+```
+Collection<String> list= new ArrayList<>();
+Collections.addAll(list,"张无忌","赵敏","周芷若","张强","张三丰");
+Stream<String> s1=list.stream();
+System.out.println(s1.count());
+
+//2、获取Map集合的Stream流
+Map<String,Integer> map=new HashMap<>();
+//获取键流  
+Stream<String> s2=map.keySet().stream();
+//获取值流
+Stream<Integer> s3=map.values().stream();
+//获取键值对流
+Stream<Map.Entry<String,Integer>> kv=map.entrySet().stream();
+
+//3、获取数据的Stream流
+String[] names={"赵敏","周芷若","张强","张三丰"};
+Stream<String> as = Arrays.stream(names);
+Stream<String> as1 = Stream.of(names);
+```
+
+
+
+2、Stream流的常用功能
+
+```
+//1、过滤集合
+Collection<String> list= new ArrayList<>();
+Collections.addAll(list,"张无忌","赵敏","周芷若","张强","张三丰");
+list.stream().filter(s->s.startsWith("张")).filter(s->s.length()==3).forEach(System.out::println);
+
+//2、排序
+List<Movie> movies=new ArrayList<>();
+Movie m1=new Movie("三傻大闹宝莱坞",8.8,"阿米尔汗2");
+Movie m3=new Movie("三傻大闹宝莱坞",8.8,"阿米尔汗2");
+Movie m2=new Movie("摔跤吧，爸爸",9.5,"阿米尔汗");
+Movie m4=new Movie("阿甘正传",7.5,"汤姆汉克斯");
+Collections.addAll(movies,m1,m2,m3,m4);
+movies.stream().sorted((o1,o2)->Double.compare(o1.getScore(),o2.getScore())).forEach(System.out::println);
+
+//3、limit取几个
+System.out.println("===================");
+movies.stream().limit(3).forEach(System.out::println);
+
+//4、skip跳过前几个
+System.out.println("===========================");
+movies.stream().skip(3).forEach(System.out::println);
+
+//5、distinct去重,要求重写equals,hashCode方法
+System.out.println("==============================");
+movies.stream().distinct().forEach(System.out::println);
+
+//6、map加工方法，将流上的数据加工成新数据
+System.out.println("=============================");
+movies.stream().map(m->m.getName()+"====>"+m.getScore()).forEach(System.out::println);
+
+//7、合并流，同一类型的流或者接受数据变成泛型
+Stream<String> s1=Stream.of("张三","楚留香","西门吹牛");
+Stream<String> s2 = Stream.of("李四", "石观音");
+Stream<String> s = Stream.concat(s1, s2);
+System.out.println(s.count());
+```
+
+
+
+3、Stream的终结方法
+
+forEach,count,min,max
+
+4、收集Stream流，返回数组或集合
+
+```
+List<String> list=new ArrayList<>();
+Collections.addAll(list,"张无忌","赵敏","周芷若","张强","张三丰","张三丰");
+Stream<String> s1=list.stream();//流只能用一次
+//1、收到list集合
+List<String> newlist=s1.filter(s->s.startsWith("张")&&s.length()==3).collect(Collectors.toList());
+System.out.println(newlist);
+
+//2、收集到Set集合
+Stream<String> s2 = list.stream();
+Set<String> set = s2.filter(s -> s.startsWith("张")).collect(Collectors.toSet());
+System.out.println(set);
+
+//3、收集到数组
+Stream<String> s3= list.stream();
+Object[] objects = s3.filter(s -> s.startsWith("张")).toArray();
+System.out.println(Arrays.toString(objects));
+
+//4、收集到Map集合
+List<Movie> movies=new ArrayList<>();
+Movie m1=new Movie("三傻大闹宝莱坞",8.8,"阿米尔汗2");
+Movie m3=new Movie("三傻大闹宝莱坞",8.9,"阿米尔汗2");
+Movie m2=new Movie("摔跤吧，爸爸",9.5,"阿米尔汗");
+Movie m4=new Movie("阿甘正传",7.5,"汤姆汉克斯");
+Collections.addAll(movies,m1,m2,m3,m4);
+//报错Duplicate key，二分合并
+Map<String,Double> map= movies.stream().limit(3).collect(Collectors.toMap(m11->m11.getName(),m22->m22.getScore(),(v1,v2)->v2));
+System.out.println(map);
+```
+
+## 6、File
+
+1、File的常用方法
+
+```
+    //1、判断文件是否存在
+    System.out.println(f.exists());
+
+    //2、判断是否是文件
+    System.out.println(f.isFile());
+
+    //3、判断是否是文件夹
+    System.out.println(f.isDirectory());
+
+    //4、获取文件的名称
+    System.out.println(f.getName());
+
+    //5、获取文件大小，返回字节数
+    System.out.println(f.length());
+
+    //6、获取文件的最后修改时间
+    long time=f.lastModified();
+    DateTimeFormatter dft=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss EEE a");
+    //先将long类型转换为LocalDateTime对象
+    LocalDateTime ldt=LocalDateTime.ofInstant(Instant.ofEpochMilli(time),ZoneId.systemDefault());
+    String formattedTime=ldt.format(dft);
+    System.out.println(formattedTime);
+
+    //7、获取相对路径
+    System.out.println(f.getPath());
+
+    //8、获取绝对路径
+    System.out.println(f.getAbsolutePath());
+}
+```
+
+2、file的创建删除
+
+```
+//1、创建一个新文件
+File f=new File("E:\\resource\\comlily.txt");
+try {
+    System.out.println(f.createNewFile());
+} catch (IOException e) {
+    throw new RuntimeException(e);
+}
+
+//2、创建新文件夹，只能创建一级文件夹
+File f2=new File("E:\\resource\\eee66");
+System.out.println(f2.mkdir());
+
+//3、创建文件夹，可创建多级
+File f3=new File("E:\\resource\\eee77\\ccc");
+System.out.println(f3.mkdirs());
+
+//4、只能删除文件和和空文件夹，不能删除非空文件夹
+System.out.println(f.delete());
+System.out.println(f2.delete());
+System.out.println(f3.delete());
+```
+
+3、File的遍历
+
+```
+//1、list() 获取当前目录下的所有的“一级文件名称”到一个字符串数组中去返回
+File f=new File("E:\\01-dll");
+String[] names=f.list();
+for (String name : names) {
+    System.out.println(name);
+}
+
+//2、listFiles() 获取当前目录下所有的“一级文件对象”到一个文件对象数组中去返回
+/*注意：当主调是文件或路径不存在时，返回null
+*       当主调文件夹时空文件夹时，返回一个长度为零的数组
+*       当主调是一个有内容的文件夹时，将里面所有一级文件和文件夹的路径放在File数组中返回
+*       当主调是一个文件夹时，且里面有隐藏文件时，将里面所有文件和文件夹的路径在File数组中返回，包含隐藏文件
+*       当主调是一个文件夹时，但是没有权限访问，返回null*/
+File[] files=f.listFiles();
+for (File file : files) {
+    System.out.println(file);
+}
+```
+
+4、文件搜索
+
+前置知识：递归
+
+递归的三要素:递归的公式，递归的终结点，递归的方向必须指向终结点
+
+```
+private static void searchFile(File dir, String fileName) {
+    //1、搜索判断
+    if(dir==null || !dir.exists() ||dir.isFile())
+    {
+        return;
+    }
+    //2、提取所有一级文件
+    File[] files=dir.listFiles();
+    if(files==null || files.length==0)
+    {
+        return;
+    }
+    //遍历
+    for (File file : files) {
+        if(file.isFile())
+        { //是文件
+            if(file.getName().contains(fileName))
+            {
+                System.out.println(file.getAbsoluteFile());
+            }
+        }
+        else {
+            //文件夹
+            searchFile(file,fileName);   
+        }
+    }
+```
+
+
+
+## 7、IO流
+
+前置知识：字符集
+
+ASCALL码，一个字符占一个字节，GBK：中文的编码，一个字占两个字节
+
+UTF-8：是Unicode字符集的一种编码方案，采取可变长编码方案，共分四个长度区：1个字节
+
+![848d2d2ac780c895ccc44c85131e6c1](E:\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\848d2d2ac780c895ccc44c85131e6c1.jpg)
+
+注意：字符编码使用的字符集，和解码使用的字符集要一致，否则会出现乱码
+
+​		英文和数字不会出现乱码
+
+编码解码
+
+```
+String info="abc我在黑马听磊哥说nb!";
+//编码成字节
+byte[] bytes=info.getBytes();
+System.out.println(Arrays.toString(bytes));
+
+byte[] bytes1=info.getBytes("GBK");
+System.out.println(Arrays.toString(bytes1));
+
+//解码成字符
+String rs1=new String(bytes);
+System.out.println(rs1);
+String rs2=new String(bytes1,"GBK");
+System.out.println(rs2);
+```

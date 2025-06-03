@@ -1,4 +1,4 @@
-package d1_stream;
+package com.lily.d1_stream;
 
 import java.util.*;
 import java.util.stream.Stream;
