@@ -1636,6 +1636,8 @@ UTF-8：是Unicode字符集的一种编码方案，采取可变长编码方案�
 
 ![848d2d2ac780c895ccc44c85131e6c1](E:\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\848d2d2ac780c895ccc44c85131e6c1.jpg)
 
+![8da287146d0e7a85888b9f551972205](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\8da287146d0e7a85888b9f551972205.jpg)
+
 注意：字符编码使用的字符集，和解码使用的字符集要一致，否则会出现乱码
 
 ​		英文和数字不会出现乱码
@@ -1656,4 +1658,158 @@ String rs1=new String(bytes);
 System.out.println(rs1);
 String rs2=new String(bytes1,"GBK");
 System.out.println(rs2);
+```
+
+
+
+IO流概述
+
+作用:读写数据
+
+I 指input，称为输入流:负责把数据读到内存中去，O指Output，称为输出流：负责写数据出去
+
+按流中数据的最小单位，分为：字节流：适合所有类型的文件；字符流：只适合操作纯文本文件
+
+总体就可分为四大流
+
+![a1595ef9023b446da1a79cb2acfc18a](D:\java codes\javasepromax\笔记图片\a1595ef9023b446da1a79cb2acfc18a.jpg)
+
+![5c24b79896be28ed0f63ff053925ae0](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\5c24b79896be28ed0f63ff053925ae0.jpg)
+
+字节流：适合做数据的转移，如复制
+
+### 1、字节输入流
+
+一次读一个字节
+
+```
+//InputStream is=new FileInputStream(new File("day09-io\\src\\didi.txt"));//完整写法
+        InputStream is=new FileInputStream("day09-io\\src\\didi.txt") ;//简洁写法
+
+        int b;//用于记住每次读取的字节
+        while((b= is.read())!=-1)
+        {
+            System.out.print((char)b);
+        }
+        /* 拓展：
+       1、代码性能差，一次只读取一个字节
+       2、会截断汉字的字节
+        * */
+```
+
+一次读多个字节
+
+```
+InputStream is=new FileInputStream("day09-io\\src\\didi1.txt");
+byte[] buffer=new byte[3];//一次读取三个
+/*int len=is.read(buffer);
+System.out.println("内容："+new String(buffer));//下次读取还用同一个桶
+System.out.println("长度："+len);
+//要读取多少倒多少
+int len2=is.read(buffer);
+System.out.println("内容："+new String(buffer,0,len2));
+System.out.println(len2);*/
+
+//循环改进
+int len;
+while( (len=is.read(buffer))!=-1)
+{
+    System.out.println(new String(buffer,0,len));
+}
+/*拓展：
+* 1、性能比较好
+* 2、仍然没有解决汉字乱码的问题*/
+```
+
+一次读完全部字节
+
+```
+InputStream is=new FileInputStream("day09-io\\src\\didi2.txt") ;//简洁写法
+File f=new File("day09-io\\src\\didi2.txt");
+/*long size=f.length();
+byte[] buffer=new byte[(int)size];
+System.out.println("文件的大小："+size);
+int len=is.read(buffer);
+System.out.println("读取的字节:"+len);
+System.out.println(new String(buffer));
+*/
+byte[] buffer=is.readAllBytes();
+System.out.println(new String(buffer));
+/*缺点：不能读取大一点的文件*/
+```
+
+字符流更适于读写文本文件
+
+### 2、字节输出流
+
+```
+OutputStream os = new FileOutputStream("day09-io\\src\\didi3.txt");
+os.write('a');
+os.write(97);
+os.write("\r\n".getBytes());
+byte[] bytes="abc我爱你中国666".getBytes();
+os.write(bytes);
+os.write("\r\n".getBytes());
+os.write(bytes,3,15);
+//io流管道属于系统资源，会占用内存和相应的内存资源
+//用完之后要关闭管道，释放被占用的内存资源
+//os.flush();//刷新缓存在内存中的数据到磁盘中
+os.close();//关闭包含刷新！
+```
+
+### 3、资源关闭的方式
+
+finally代码区的特点：无论try中的程序正常执行还是出异常，即便是return了，最后都一定会执行finally区，除非JVM终止了
+
+但finally区不能返回数据，否则会覆盖前面的数据
+
+可将资源关闭放在finally区
+
+```
+InputStream is=null;
+OutputStream os=null;
+try {
+    is = new FileInputStream("D:\\编程笔记\\kiss.png");
+    os = new FileOutputStream("D:\\编程笔记\\kiss-bak.png");
+    byte[] buffer = new byte[1024];
+    int len;
+    while ((len = is.read(buffer)) != -1) {
+
+        os.write(buffer, 0, len);
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
+finally {
+    try {
+        os.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    try {
+        is.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    System.out.println("复制完成");
+}
+```
+
+太不简便，改进，try-with-resource,try小括号里定义资源
+
+```
+try(
+	//这里只能放置资源对象，用完后会自动调用close关闭资源，这里的资源指实现类AutoCloseable接口
+	InputStream is = new FileInputStream("D:\\编程笔记\\kiss.png");
+    OutputStream os = new FileOutputStream("D:\\编程笔记\\kiss-bak.png");) {
+    
+    byte[] buffer = new byte[1024];
+    int len;
+    while ((len = is.read(buffer)) != -1) {
+        os.write(buffer, 0, len);
+    }
+}catch(Exception e) {
+        e.printStackTrace();
+    }
+}
 ```
