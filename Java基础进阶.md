@@ -1672,9 +1672,9 @@ I 指input，称为输入流:负责把数据读到内存中去，O指Output，�
 
 总体就可分为四大流
 
-![a1595ef9023b446da1a79cb2acfc18a](D:\java codes\javasepromax\笔记图片\a1595ef9023b446da1a79cb2acfc18a.jpg)
+![a1595ef9023b446da1a79cb2acfc18a](E:\javaprojects\javasepromax\笔记图片\a1595ef9023b446da1a79cb2acfc18a.jpg)
 
-![5c24b79896be28ed0f63ff053925ae0](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\5c24b79896be28ed0f63ff053925ae0.jpg)
+![5c24b79896be28ed0f63ff053925ae0](E:\javaprojects\javasepromax\笔记图片\5c24b79896be28ed0f63ff053925ae0.jpg)
 
 字节流：适合做数据的转移，如复制
 
@@ -1813,3 +1813,77 @@ try(
     }
 }
 ```
+
+### 4、字符输入流
+
+![f3cbf1a56112dbd11403f261c3432fe](E:\javaprojects\javasepromax\笔记图片\f3cbf1a56112dbd11403f261c3432fe.jpg)
+
+```
+Reader fr= new FileReader("day10-io\\src\\com\\lily\\d1_char_stream\\llily.txt");
+//2、读取一个字符回来，没有返回-1
+/*int c1=fr.read();
+System.out.println((char)c1);
+int c2=fr.read();
+System.out.println((char)c2);
+int c3= fr.read();
+System.out.println(c3);*/
+
+//3、使用循环解决
+int c;
+while((c= fr.read())!=-1)
+{
+    System.out.println((char)c);
+}
+/*
+* 解决了乱码的问题
+* 性能较差*/
+```
+
+```
+try (
+        Reader fr= new FileReader("day10-io/src/com/lily/d1_char_stream/llily1.txt");
+        ){
+    char[] chs=new char[3];
+    int len;
+    while((len=fr.read(chs))!=-1)
+    {
+        String str=new String(chs,0,len);
+        System.out.print(str);
+    }
+} catch (Exception e) {
+
+    e.printStackTrace();
+}
+//性能较好
+```
+
+### 5、字符输出流
+
+```
+try (Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2.txt",true)) {
+    //1、写一个字符出去
+    fw.write('a');
+    fw.write(98);
+    fw.write("\r\n");
+    //2、写一个字符串出去
+    fw.write("我爱Java666");
+    fw.write("\r\n");
+
+    //3、写一个字符串的一部分出去
+    fw.write("woai中国",4,2);
+    fw.write("\r\n");
+    //4、写一个字符数组出去
+    char[] str="java".toCharArray();
+    fw.write(str);
+    fw.write("\r\n");
+    //fw.flush();刷新缓冲区，刷新后，流可以继续使用
+    //fw.close();关闭后流不可以使用
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2.txt",true)
+
+加了true,可以保留前面写的内容
