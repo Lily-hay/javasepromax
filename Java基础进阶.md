@@ -1634,6 +1634,8 @@ ASCALL码，一个字符占一个字节，GBK：中文的编码，一个字占�
 
 UTF-8：是Unicode字符集的一种编码方案，采取可变长编码方案，共分四个长度区：1个字节
 
+![8da287146d0e7a85888b9f551972205](D:\java codes\javasepromax\笔记图片\8da287146d0e7a85888b9f551972205.jpg)
+
 ![848d2d2ac780c895ccc44c85131e6c1](E:\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\848d2d2ac780c895ccc44c85131e6c1.jpg)
 
 ![8da287146d0e7a85888b9f551972205](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\8da287146d0e7a85888b9f551972205.jpg)
@@ -1675,6 +1677,10 @@ I 指input，称为输入流:负责把数据读到内存中去，O指Output，�
 ![a1595ef9023b446da1a79cb2acfc18a](E:\javaprojects\javasepromax\笔记图片\a1595ef9023b446da1a79cb2acfc18a.jpg)
 
 ![5c24b79896be28ed0f63ff053925ae0](E:\javaprojects\javasepromax\笔记图片\5c24b79896be28ed0f63ff053925ae0.jpg)
+
+![a1595ef9023b446da1a79cb2acfc18a](D:\java codes\javasepromax\笔记图片\a1595ef9023b446da1a79cb2acfc18a.jpg)
+
+![f3cbf1a56112dbd11403f261c3432fe](D:\java codes\javasepromax\笔记图片\f3cbf1a56112dbd11403f261c3432fe.jpg)
 
 字节流：适合做数据的转移，如复制
 
@@ -1887,3 +1893,150 @@ try (Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2
 Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2.txt",true)
 
 加了true,可以保留前面写的内容
+
+### 6、缓冲流
+
+![3a4650bfab8ccbe48a9fe82e37da56d](D:\java codes\javasepromax\笔记图片\3a4650bfab8ccbe48a9fe82e37da56d.jpg)
+
+原理：**字节缓冲输入流自带了8KB的缓冲池**，字节缓冲输出流也自带了8KB的缓冲池
+
+字节缓冲输入流用法
+
+```
+try(InputStream is = new FileInputStream("D:\\编程笔记\\kiss.png");
+    InputStream bis=new BufferedInputStream(is);
+    OutputStream os = new FileOutputStream("D:\\编程笔记\\kiss-bak.png");
+    OutputStream bos=new BufferedOutputStream(os);
+    ) {
+
+    byte[] buffer = new byte[1024];
+    int len;
+    while ((len = bis.read(buffer)) != -1) {
+        bos.write(buffer, 0, len);
+    }
+}catch(Exception e) {
+    e.printStackTrace();
+}
+```
+
+字符缓冲流
+
+**自带8K的字符缓冲池**
+
+缓冲字符输入流
+
+```
+try (
+        Reader fr= new FileReader("day10-io/src/com/lily/d1_char_stream/llily1.txt");
+        //把低级的字符输入流包装成高级的字符缓冲输入流
+        BufferedReader br=new BufferedReader(fr);
+){
+    /*char[] chs=new char[3];
+    int len;
+    while((len=br.read(chs))!=-1)
+    {
+        String str=new String(chs,0,len);
+        System.out.print(str);
+    }*/
+    //缓冲字符流多一个功能，逐行读取（经典代码）
+    String line;
+    while((line=br.readLine())!=null)
+    {
+        System.out.println(line);
+    }
+} catch (Exception e) {
+
+    e.printStackTrace();
+}
+```
+
+缓冲字符输出流
+
+```
+try (
+        Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2.txt",true);
+        BufferedWriter bw=new BufferedWriter(fw);
+) {
+    //1、写一个字符出去
+    bw.write('a');
+    bw.write(98);
+    //自带的换行功能
+    bw.newLine();
+    //2、写一个字符串出去
+    bw.write("我爱Java666");
+    bw.newLine();
+
+    //3、写一个字符串的一部分出去
+    bw.write("woai中国",4,2);
+    bw.newLine();
+    //4、写一个字符数组出去
+    char[] str="java".toCharArray();
+    bw.write(str);
+    bw.newLine();
+    //fw.flush();刷新缓冲区，刷新后，流可以继续使用
+    //fw.close();关闭后流不可以使用
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+低级字节流按照数组形式复制通过加大buffer性能也会比较好，字节缓冲流加buffer性能也好
+
+7、转换流
+
+**若代码编码与被读取的文本文件的编码不一致，使用字符流读取文本文件会乱码**
+
+字符输入转换流
+
+**先获取文件的原始字节流，再将其按照真实的字符集编码转换成字符输入流，这样字符输入流就不乱码了**
+
+```
+InputStream is = new FileInputStream("D:\\编程笔记\\kiss.txt");
+Reader isr=new InputStreamReader(is,"GBK");//按照指定编码转换成字符输入流
+BufferedReader br=new BufferedReader(isr);//用高级的缓冲流包装
+```
+
+字符输出转换流
+
+```
+OutputStream os = new FileOutputStream("D:\\编程笔记\\kiss-bak.png");
+Writer osr=new OutputStreamWriter(os,"GBK");
+BufferedWriter bw=new BufferedWriter(osr);
+```
+
+### 8、打印流
+
+![ab044668482d35a5f17fa1986b42901](D:\java codes\javasepromax\笔记图片\ab044668482d35a5f17fa1986b42901.jpg)
+
+**作用：可以实现更方便、更高效地打印数据出去，能实现打印啥出去就是啥出去**
+
+PrintStream和PrintReader的打印功能完全相同，
+
+```
+try(
+        //PrintStream ps=new PrintStream("day10-io/src/com/lily/d4_print_stream/aka.txt");
+        PrintWriter ps=new PrintWriter("day10-io/src/com/lily/d4_print_stream/aka.txt");
+        ) {
+    ps.print('a');
+    ps.print(97);
+    ps.print(true);
+    ps.print("你好");
+    ps.println("okk");
+    ps.println("fine");
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+输出语句的重定向
+
+```
+//输入语句的重定向
+System.out.println("红豆生南国");
+PrintStream ps=new PrintStream(new FileOutputStream("day10-io/src/com/lily/aka1.txt"));
+System.setOut(ps);
+//后面输出的语句都在文件里了
+System.out.println("春来生几支");
+```
