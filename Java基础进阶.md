@@ -2040,3 +2040,146 @@ System.setOut(ps);
 //后面输出的语句都在文件里了
 System.out.println("春来生几支");
 ```
+
+### 7、特殊数据流
+
+允许把数据和其类型一并写出，写入与输入的格式要一致，适合于·通信使用·1
+
+![717a3989259a817eac88c4f09fd8066](D:\java codes\javasepromax\笔记图片\717a3989259a817eac88c4f09fd8066.jpg)
+
+```
+try(DataOutputStream dos=new DataOutputStream(new FileOutputStream("day10-io/src/com/lily/data.txt"))) {//写入
+    dos.writeChar('a');
+    dos.writeByte(97);
+    dos.writeBoolean(true);
+    dos.writeUTF("你好");
+
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+```
+try(DataInputStream dis=new DataInputStream(new FileInputStream("day10-io/src/com/lily/data.txt"))) {//读取
+    char c=dis.readChar();
+    System.out.println(c);
+    Byte b=dis.readByte();
+    System.out.println(b);
+    Boolean bl=dis.readBoolean();
+    System.out.println(bl);
+    String s=dis.readUTF();
+    System.out.println(s);
+
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+### 8、对象序列化和反序列化
+
+对象序列化：可以把Java对象进行序列化：把Java对象存到文件中去
+
+对象要实现序列化接口，用transient的成员不会被序列化，或是要同时序列化过个对象，则用集合来装，自己实现类序列化接口
+
+```
+public class Student implements Serializable {
+    private String name;
+    private int age;
+    //用transient修饰的不同被序列化
+    private transient String password;
+```
+
+```
+ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream("day10-io/src/com/lily/object.txt"));//序列化
+Student s=new Student("张三",27,"okk666",176.4);
+oos.writeObject(s);
+```
+
+```
+ObjectInputStream ois=new ObjectInputStream(new FileInputStream("day10-io/src/com/lily/object.txt"));//反序列化
+Student s=(Student)ois.readObject();
+System.out.println(s);
+```
+
+### 9、IO框架
+
+导入common-io框架
+
+```
+//用IO框架实现
+FileUtils.copyFile(new File("day10-io/src/com/lily/aka.txt"),new File("day10-io/src/com/lily/aka-new.txt"));
+//FileUtils.copyDirectory();复制文件夹
+//FileUtils.deleteDirectory();删除文件夹
+
+//Java完成文件的复制
+//Files.copy(Path.of("day10-io/src/com/lily/aka.txt"),Path.of("day10-io/src/com/lily/aka-new.txt"));
+```
+
+## 8、特殊文件和日志
+
+特殊文件：属性文件.properties  .xml文件
+
+存储有关系的数据，比如用户名和密码等，作为系统的配置文件，作为信息进行传输
+
+日志文件：把程序运行的信息，记录到文件中，方便程序员定位bug，并了解程序的执行情况
+
+## 1、属性文件
+
+特点：1、都只有键值对   2、键不能重复   3、文件后缀一般是以.properties结尾的
+
+![a1ef089ccce7f78cd84dd16af940e72](D:\java codes\javasepromax\笔记图片\a1ef089ccce7f78cd84dd16af940e72.jpg)
+
+Properties属于Map集合，load方法加载属性文件信息
+
+```
+//1、创建对象
+Properties p=new Properties();
+System.out.println(p);
+//2、加载
+p.load(new FileInputStream("day11-special-file-log/src/user.properties"));
+System.out.println(p);
+//遍历
+p.forEach((k,v)->
+        System.out.println(k+">>>"+v));
+System.out.println(p.getProperty("赵敏"));
+```
+
+```
+Properties p = new Properties();
+p.setProperty("zhangsan","127369");
+p.setProperty("lisi","127369");
+p.setProperty("小昭","wuji");
+//存储
+p.store(new FileOutputStream("day11-special-file-log/src/user1.properties"),"i save some user's password ");//注释
+```
+
+修改用户信息
+
+```
+Properties p=new Properties();
+p.load(new FileReader("day11-special-file-log/src/people.txt"));
+if(p.containsKey("李芳"))
+{
+    p.setProperty("李芳","18");
+}
+p.store(new FileWriter("day11-special-file-log/src/people.txt"),"change message");
+System.out.println(p);
+```
+
+## 2、XML文件
+
+本质是一种数据格式，可以用来存储复杂的数据结构和数据关系
+
+特点：
+
+1、”<标签名>"称为一个标签或一个元素，一般成对出现
+
+2、标签名可自己定义，但必须正确嵌套
+
+3、XML文件只能由有一个根标签
+
+4、XML里的标签可以有属性id=
+
+5、后缀.xml

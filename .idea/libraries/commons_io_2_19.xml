@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="commons-io-2.19">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/day10-io/lib/commons-io-2.19.0" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/day10-io/lib/commons-io-2.19.0" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/day10-io/lib/commons-io-2.19.0" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/day10-io/lib/commons-io-2.19.0" recursive="false" type="SOURCES" />
+  </library>
+</component>
