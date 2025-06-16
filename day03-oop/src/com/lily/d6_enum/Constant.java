@@ -1,4 +1,4 @@
-package d6_enum;
+package com.lily.d6_enum;
 
 public class Constant {
     public static final int DOWN = 1;

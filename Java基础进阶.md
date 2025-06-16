@@ -1898,6 +1898,8 @@ Writer fw = new FileWriter("day10-io\\src\\com\\lily\\d1_char_stream\\lily2.txt"
 
 ![3a4650bfab8ccbe48a9fe82e37da56d](D:\java codes\javasepromax\笔记图片\3a4650bfab8ccbe48a9fe82e37da56d.jpg)
 
+![3a4650bfab8ccbe48a9fe82e37da56d](E:\javaprojects\javasepromax\笔记图片\3a4650bfab8ccbe48a9fe82e37da56d.jpg)
+
 原理：**字节缓冲输入流自带了8KB的缓冲池**，字节缓冲输出流也自带了8KB的缓冲池
 
 字节缓冲输入流用法
@@ -2125,7 +2127,7 @@ FileUtils.copyFile(new File("day10-io/src/com/lily/aka.txt"),new File("day10-io/
 
 日志文件：把程序运行的信息，记录到文件中，方便程序员定位bug，并了解程序的执行情况
 
-## 1、属性文件
+### 1、属性文件
 
 特点：1、都只有键值对   2、键不能重复   3、文件后缀一般是以.properties结尾的
 
@@ -2168,7 +2170,7 @@ p.store(new FileWriter("day11-special-file-log/src/people.txt"),"change message"
 System.out.println(p);
 ```
 
-## 2、XML文件
+### 2、XML文件
 
 本质是一种数据格式，可以用来存储复杂的数据结构和数据关系
 
@@ -2183,3 +2185,420 @@ System.out.println(p);
 4、XML里的标签可以有属性id=
 
 5、后缀.xml
+
+![f3cbf1a56112dbd11403f261c3432fe](E:\javaprojects\javasepromax\笔记图片\f3cbf1a56112dbd11403f261c3432fe.jpg)
+
+用dom4j架包读取XML文件
+
+```
+Element rootElement=document.getRootElement();
+System.out.println(rootElement.getName());
+
+//4、提取了元素对象
+List<Element> sonEles=rootElement.elements("contact");
+for (Element sonEle : sonEles) {
+    System.out.println(sonEle.getName());
+}
+
+//给定获取单个子元素
+Element userEle=rootElement.element("user");
+System.out.println(userEle.getName());
+
+Element contactEle=rootElement.element("contact");//默认拿第一个contact
+System.out.println(contactEle.elementText("name"));
+
+//5、提取子元素的属性对象
+Attribute idAttr=contactEle.attribute("id");
+System.out.println(idAttr.getName());
+System.out.println(idAttr.getValue());
+
+//6、文本值
+//通过父元素拿到子元素文本值
+System.out.println(contactEle.elementText("name"));
+System.out.println(contactEle.elementTextTrim("name"));//去掉前后空格
+
+//先拿到元素对象，再提取其文本值
+Element emailEle=contactEle.element("email");
+System.out.println(emailEle.getText());
+System.out.println(emailEle.getTextTrim());
+```
+
+用dom4j读取XML文件
+
+```
+SAXReader saxReader=new SAXReader();
+Document document=saxReader.read("day11-special-file-log/contact.xml");
+Element rootElement=document.getRootElement();
+List<Contact>  contacts=new ArrayList<>();
+List<Element> sonEles=rootElement.elements("contact");
+for (Element sonEle : sonEles) {
+    Contact c=new Contact();
+    c.setId(Integer.valueOf(sonEle.attributeValue("id")));
+    c.setName(sonEle.elementTextTrim("name"));
+    c.setGender(sonEle.elementTextTrim("gender").charAt(0));
+    c.setEmail(sonEle.elementTextTrim("email"));
+    contacts.add(c);
+}
+System.out.println(contacts);
+```
+
+写进XML文件，直接拼接字符串
+
+```
+StringBuilder sb=new StringBuilder();
+sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n");
+sb.append("<user>\r\n");
+sb.append("\t<name>").append("张三").append("</name>\r\n");
+sb.append("\t<age>").append("18").append("</age>\r\n");
+sb.append("\t<sex>").append("男").append("</sex>\r\n");
+sb.append("</user>\r\n");
+PrintStream ps=new PrintStream("day11-special-file-log/user3.xml");
+ps.println(sb);
+ps.close();
+```
+
+约束XML文件的书写
+
+DTD约束文档，不约束具体的数据类型
+
+schema约束文档，约束具体的文件类型，后缀.xsd
+
+
+
+### 3、日志
+
+![日志](E:\javaprojects\javasepromax\笔记图片\日志.jpg)
+
+我们使用Logback，slf4j接口
+
+实现步骤：
+
+1、倒入Logback框架导入项目中
+
+logback-core, logback-classic，sil4j
+
+2、将Logback框架的核心配置文件logback.xml直接拷贝到src目录下
+
+## 9、多线程
+
+线程：一个程序内部的一条执行流程（CPU负责调度执行）
+
+多线程：多条执行流程
+
+### 1、创建线程
+
+创建线程要继承Thread类，重写run方法
+
+#### 创建方法一
+
+多线程的注意事项：
+
+1、启动线程必须调用start方法，不是调用run方法
+
+~直接调用run方法会当成普通的方法执行，此时相当于单线程执行
+
+~只有主调start方法才是启动一个新线程执行
+
+2、不要把主线程放在启动子线程的前面
+
+~这样一定是主线程先跑完，相当于单线程
+
+```
+public static void main(String[] args) {
+Thread t=new MyThread();
+//t.run//
+t.start();
+    for (int i = 0; i < 3; i++) {
+        System.out.println("主线程输出："+i);
+    }
+}
+```
+
+```
+class MyThread extends Thread
+{
+    @Override
+    public void run(){
+    for (int i = 0; i < 4; i++) {
+        System.out.println("子线程输出了"+i);
+    }
+}
+}
+```
+
+优点：编码简单
+
+缺点：线程类已经继承Thread，无法再继承其他类，不利于功能拓展
+
+
+
+#### 创建方法二
+
+实现Runnable接口，重写run方法，但得到的是一个任务类对象，要将其包装成线程对象
+
+优点：只用实现类，可以继续继承其他类，实现其他接口，功能扩展性很强
+
+```
+//1、创建任务类的一个对象
+Runnable target=new NewThread();
+//2、将任务类对象给子线程
+Thread t=new Thread(target);
+//3、启动子线程
+t.start();
+for (int i = 0; i < 3; i++) {
+    System.out.println("主线程执行"+i);
+}
+```
+
+```
+class NewThread implements Runnable
+{
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 3; i++) {
+            System.out.println("子线程实现了"+i);
+        }
+    }
+}
+```
+
+创建方法三
+
+优点：线程任务类只是实现接口，可以继续继承类和实现接口，扩展性强；**可以在线程执行完后获取线程执行的结果**
+
+利用Callable接口、FutureTask类来实现
+
+①创建任务对象：
+
+​	定义一个类实现Callable接口，重写call方法，封装要做的事情，和要返回的数据
+
+​	把Callable类型的对象封装成FatureTask(线程任务对象)
+
+②把线程对象交给Thread对象
+
+③调用start方法启动线程
+
+④线程执行完毕，通过FutureTask对象的get方法去获取线程任务执行的结果
+
+```
+//1、定义一个类实现Callable接口
+class MyCallable implements Callable
+{
+    private int n;
+    public MyCallable (int n)
+    {
+        this.n=n;
+    }
+    int sum;
+    @Override
+    public String call() throws Exception {
+        for (int i = 0; i < n; i++) {
+            sum+=i;
+        }
+        return n+"个数的和为:"+sum;
+    }
+}
+```
+
+```
+//2、创建一个Callable对象
+Callable callable=new MyCallable(100);
+//3、将Callable 对象封装为FutureTask对象
+FutureTask<String> task=new FutureTask<>(callable);
+//FutureTask两个作用：1、是一个Runnable对象  2、可以·返回值
+Thread t=new Thread(task);
+t.start();
+try {
+    String rs1 = task.get();
+    System.out.println(rs1);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+2、api
+
+
+
+### 3、线程安全
+
+出现的原因：1、存在多个线程同时执行；2、同时访问同一个共享资源；3、存在修改该共享资源
+
+解决方法：
+
+#### 1、同步代码块synchronized
+
+作用：把访问的共享资源的核心代码給上锁，以此保证线程安全
+
+原理：每次只允许一个线程加锁后进入，执行完毕后自动解锁，其他线程才能进
+
+注意事项：对于当前同时执行的线程来说，同步锁必须是同一锁（**同一个对象**）
+
+锁对象最好不要随便选，会影响其他无关线程的执行
+
+锁对象使用规范：
+
+1、**建议使用共享资源作为锁的对象**，对于实例方法建议使用this作为锁的对象
+
+2、对于静态方法建议使用**字节码（类名.class）**对象作为锁对象
+
+```
+synchronized (this) {
+    if(money<=this.money)
+    {
+        System.out.println(name+"成功取出"+money);
+        this.money-=money;
+        System.out.println(name+"剩余余额为"+this.money);
+    }
+    else
+    {
+        System.out.println(name+"取钱，余额不足！");
+    }
+}
+```
+
+
+
+#### 2、同步方法
+
+对出现问题的核心方法使用synchronized修饰
+
+每次只能一个·线程占锁访问
+
+```
+public synchronized void drawMoney(int money) {
+    String name=Thread.currentThread().getName();
+
+        if(money<=this.money)
+        {
+            System.out.println(name+"成功取出"+money);
+            this.money-=money;
+            System.out.println(name+"剩余余额为"+this.money);
+        }
+        else
+        {
+            System.out.println(name+"取钱，余额不足！");
+        }
+
+}
+```
+
+#### 3、Lock锁
+
+更方便、灵活、强大
+
+Lock是接口，不能直接实例化，可采用ReentrantLock来构建对象
+
+```
+private Lock lk=new ReentrantLock();
+```
+
+```
+try {
+    lk.lock();
+    if(money<=this.money)
+    {
+        System.out.println(name+"成功取出"+money);
+        this.money-=money;
+        System.out.println(name+"剩余余额为"+this.money);
+    }
+    else
+    {
+        System.out.println(name+"取钱，余额不足！");
+    }
+} finally {
+    lk.unlock();
+}
+```
+
+
+
+#### 4、线程通信
+
+当多个线程共同操作共享资源时，线程间通过某种方式相互告知自己的状态，以相互协调，并避免无效的资源争夺
+
+常见模型（消费者和生产者模型）
+
+**生产者生产完数据应该通知消费者，等待自己；消费者消费完数据后也应该唤醒别人，等待自己**
+
+#### 5、线程池
+
+**是一个可复用线程的技术**
+
+如何得到线程池对象？
+
+方法一：使用ExecutorServise的实现类ThreadPoolExecutor创建一个线程池对象
+
+方法二：使用Executors(线程池工具类)调用方法返回不同特点的线程池对象
+
+![线程池参数](E:\javaprojects\javasepromax\笔记图片\线程池参数.jpg)
+
+注意事项：
+
+临时线程什么时候创建？
+
+新任务提交时发现核心线程都在忙，任务队列也满了，并且还可以创建临时线程，此时才会创建
+
+什么时候会拒绝新任务？
+
+当核心线程和临时线程都在忙，任务队列也满了，新的任务过来时才开始拒绝
+
+1、线程池处理Runnable对象
+
+```
+ExecutorService pool=new ThreadPoolExecutor(3,5,1, TimeUnit.MINUTES,
+        new ArrayBlockingQueue<>(3), Executors.defaultThreadFactory(),new ThreadPoolExecutor.CallerRunsPolicy());
+Runnable target=new MyRunnable();
+pool.execute(target);//自动创建线程，并处理任务
+pool.execute(target);
+pool.execute(target);
+pool.execute(target);//复用线程
+pool.execute(target);
+pool.execute(target);
+pool.execute(target);//到了创建临时线程的时机
+pool.execute(target);//
+pool.execute(target);//超出线程最大数，拒绝新任务
+```
+
+2、处理Callable对象
+
+```
+ExecutorService pool=new ThreadPoolExecutor(3,5,1, TimeUnit.MINUTES,
+        new ArrayBlockingQueue<>(3), Executors.defaultThreadFactory(),new ThreadPoolExecutor.CallerRunsPolicy());
+Future<String> f1 = pool.submit(new MyCallable(100));
+Future<String> f2 = pool.submit(new MyCallable(200));
+Future<String> f3 = pool.submit(new MyCallable(300));
+try {
+    String s = f1.get();
+    System.out.println(s);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+3、使用Executors，是线程池的一个工具类
+
+```
+ExecutorService pool= Executors.newFixedThreadPool(3);
+```
+
+缺点：不适合大型项目中使用，没有限制任务对象个数，可能会产生风险，如内存溢出
+
+
+
+#### 6、并发、并行
+
+进程：正在运行的程序（软件）就是一个进程
+
+线程属于进程，一个进程中同时运行多个线程
+
+**进程中的多个线程其实是并发和并行执行的**
+
+并发：CPU会轮询为系统的每个线程服务的，由于CPU切换的速度很快，给人的感觉是同时进行的，这就是并发
+
+并行：在同一时刻，同时有多个线程在被CPU调度执行
+
+7、线程的生命周期
+
+![线程生命周期](E:\javaprojects\javasepromax\笔记图片\线程生命周期.jpg)

@@ -1,4 +1,4 @@
-package d6_enum;
+package com.lily.d6_enum;
 
 public class Test {
     //枚举的应用场景
