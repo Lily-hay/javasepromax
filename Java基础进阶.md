@@ -2269,6 +2269,8 @@ schema约束文档，约束具体的文件类型，后缀.xsd
 
 ![日志](E:\javaprojects\javasepromax\笔记图片\日志.jpg)
 
+![日志](D:\java codes\javasepromax\笔记图片\日志.jpg)
+
 我们使用Logback，slf4j接口
 
 实现步骤：
@@ -2534,6 +2536,8 @@ try {
 
 ![线程池参数](E:\javaprojects\javasepromax\笔记图片\线程池参数.jpg)
 
+![线程池参数](D:\java codes\javasepromax\笔记图片\线程池参数.jpg)
+
 注意事项：
 
 临时线程什么时候创建？
@@ -2602,3 +2606,88 @@ ExecutorService pool= Executors.newFixedThreadPool(3);
 7、线程的生命周期
 
 ![线程生命周期](E:\javaprojects\javasepromax\笔记图片\线程生命周期.jpg)
+
+![线程生命周期](D:\java codes\javasepromax\笔记图片\线程生命周期.jpg)
+
+## 10、网络编程
+
+可以让设备中的程序与网络中的程序数据交互
+
+基本的通信架构
+
+CS（客户端、服务端）结构、BS（浏览器、服务端）结构
+
+网络通信的关键三要素：
+
+1、IP  设备在网络中的地址，是唯一标识
+
+有IPv4（32位）和IPv6（128位）
+
+域名IP在通信中会得到实际IP
+
+公网IP是可以连接互联网的IP地址，内网IP：局域网IP，只能组织内部使用，192.168.开头的
+
+特殊IP地址：127.0.0.1、localhost代表本机IP，指挥寻找当前所在主机
+
+IP常用命令：ipconfig:查看本机IP地址，pring IP地址：检查网络是否连通
+
+物理地址：设备自生产后的唯一标识
+
+```
+InetAddress ip=InetAddress.getLocalHost();//获取本机IP地址
+System.out.println(ip.getHostAddress());
+System.out.println(ip.getHostName());
+
+//获取对方IP
+
+InetAddress ip1=InetAddress.getByName("www.baidu.com");
+System.out.println(ip1.getHostAddress());
+System.out.println(ip1.getHostName());
+
+//判断是否能联通
+System.out.println(ip1.isReachable(5000));
+```
+
+
+
+2、端口  应用程序在设备中的唯一标识，被规定为一个16位二进制数
+
+分类：
+
+》周知端口：0~1023 被预先定义的知名应用占用
+
+》**注册端口**：1024~49151，分配给用户进程或某些应用程序
+
+》动态端口：49152~65535
+
+**我们开发程序一般选择使用注册端口，且一个设备不能出现两个程序有相同的端口号，否则会出错**
+
+
+
+3、协议  连接和数据在网络中传输的规则
+
+**开放式网络互联标准：OSI网络参考模型**
+
+![网络传输模型](D:\java codes\javasepromax\笔记图片\网络传输模型.jpg)
+
+传输层的两个通信协议
+
+UDP（用户数据报协议）  TCP（传输控制协议）
+
+特点：**无连接，不可靠**，通信效率高
+
+不事先建立连接，数据按照包发，包含自己的IP、程序端口、对方的IP、对方的程序端口和数据（64KB内）等，发送方不管对方是否在线，若连接中断，数据容易丢失，对方收到数据也不返回确认
+
+TCP通信协议
+
+特点：面向连接、可靠通信
+
+TCP的最终目的：在不可靠的信道上实现可靠的传输
+
+TCP主要有三个步骤实现可靠传输：三次握手建立连接（确认双发收发正常），传输数据进行确认，四次挥手断开连接
+
+![TCP连接](D:\java codes\javasepromax\笔记图片\TCP连接.jpg)
+
+!(D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
+
+![TCP断开](D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
