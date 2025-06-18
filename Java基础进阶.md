@@ -2676,7 +2676,51 @@ UDP（用户数据报协议）  TCP（传输控制协议）
 
 特点：**无连接，不可靠**，通信效率高
 
-不事先建立连接，数据按照包发，包含自己的IP、程序端口、对方的IP、对方的程序端口和数据（64KB内）等，发送方不管对方是否在线，若连接中断，数据容易丢失，对方收到数据也不返回确认
+不事先建立连接，数据按照包发，包含自己的IP、程序端口、对方的IP、对方的程序端口和数据（64KB内）等，发送方不管对方是否在线，若连接中断，数据容易丢失，对方收到数据也不返回确认  
+
+单发单收
+
+发送端
+
+```
+//1、创建发送端对象（抛韭菜的人）
+DatagramSocket socket=new DatagramSocket();
+
+//2、创建一个数据包对象，负责封装发送的数据（盘子）
+/*
+* 参数一：发送数据，字节数组
+* 参数二：发送数据大小
+* 参数三：目标IP地址
+* 参数四：接收端端口号
+* */
+byte[] buffer="今晚一起吃个dinner,约吗？？".getBytes();
+DatagramPacket packet=new DatagramPacket(buffer,buffer.length, InetAddress.getLocalHost(),8888);
+//3、发送数据
+socket.send(packet);
+System.out.println("发送完毕！");
+//4、关闭资源
+socket.close();
+```
+
+接收端
+
+```
+//1、创建接收端对象
+DatagramSocket socket = new DatagramSocket(8888);
+byte[] buffer=new byte[1024*64];
+//2、创建接收盒子
+DatagramPacket packet=new DatagramPacket(buffer,buffer.length);
+//3、接收数据
+socket.receive(packet);
+int len=packet.getLength();
+//获取信息
+String msg= new String(buffer,0,len);
+System.out.println(msg);
+InetAddress ip=packet.getAddress();
+System.out.println("对方IP："+ip.getHostAddress());
+System.out.println("对方端口："+packet.getPort());
+socket.close();
+```
 
 TCP通信协议
 
@@ -2691,3 +2735,76 @@ TCP主要有三个步骤实现可靠传输：三次握手建立连接（确认�
 !(D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
 
 ![TCP断开](D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
+
+客户端
+
+```
+System.out.println("==========客户端启动===========");
+//1、创建客户端对象
+Socket socket=new Socket("127.0.0.1",9999);
+//2、获取输出流，发送数据
+OutputStream os=socket.getOutputStream();
+//3、将输出流包装成特殊数据输出流
+DataOutputStream dos=new DataOutputStream(os);
+Scanner sc = new Scanner(System.in);
+while (true) {
+    String msg=sc.nextLine();
+    if("exit".equals(msg))
+    {
+        System.out.println("退出成功！");
+        socket.close();
+        break;
+    }
+    dos.writeUTF(msg);
+    dos.flush();
+}
+```
+
+服务器
+
+```
+System.out.println("===========服务器启动===========");
+ServerSocket ss=new ServerSocket(9999);
+Socket socket=ss.accept();
+InputStream is=socket.getInputStream();
+DataInputStream dis=new DataInputStream(is);
+while (true) {
+    String msg=dis.readUTF();
+    System.out.println("收到的消息为："+msg);
+    System.out.println("对方IP："+socket.getInetAddress().getHostAddress());
+    System.out.println("对方端口："+socket.getPort());
+    System.out.println("------------------------------------");
+}
+```
+
+多收多发
+
+子线程
+
+```
+private Socket socket;
+
+public ServerReader(Socket socket)
+{
+    this.socket=socket;
+}
+
+@Override
+public void run()
+{
+    try {
+        InputStream is=socket.getInputStream();
+        DataInputStream dis=new DataInputStream(is);
+        while (true) {
+            String msg=dis.readUTF();
+            System.out.println("收到的消息为："+msg);
+            System.out.println("对方IP："+socket.getInetAddress().getHostAddress());
+            System.out.println("对方端口："+socket.getPort());
+            System.out.println("------------------------------------");
+
+        }
+    } catch (IOException e) {
+        System.out.println("一个客户端下线了"+socket.getInetAddress().getHostAddress());
+    }
+}
+```
