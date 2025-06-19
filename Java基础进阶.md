@@ -2670,6 +2670,8 @@ System.out.println(ip1.isReachable(5000));
 
 ![网络传输模型](D:\java codes\javasepromax\笔记图片\网络传输模型.jpg)
 
+![网络传输模型](E:\javaprojects\javasepromax\笔记图片\网络传输模型.jpg)
+
 传输层的两个通信协议
 
 UDP（用户数据报协议）  TCP（传输控制协议）
@@ -2732,9 +2734,11 @@ TCP主要有三个步骤实现可靠传输：三次握手建立连接（确认�
 
 ![TCP连接](D:\java codes\javasepromax\笔记图片\TCP连接.jpg)
 
-!(D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
+![TCP连接](E:\javaprojects\javasepromax\笔记图片\TCP连接.jpg)
 
 ![TCP断开](D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
+
+![TCP断开](E:\javaprojects\javasepromax\笔记图片\TCP断开.jpg)
 
 客户端
 
@@ -2808,3 +2812,7 @@ public void run()
     }
 }
 ```
+
+BS结构
+
+![9dc6606373851764ad66003b86d2c82](C:\Users\Administrator\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\9dc6606373851764ad66003b86d2c82.jpg)
