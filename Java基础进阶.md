@@ -2811,16 +2811,16 @@ public void run()
         System.out.println("一个客户端下线了"+socket.getInetAddress().getHostAddress());
     }
 }
+11、Java高级技术
 ```
 
-<<<<<<< HEAD
-11、Java高级技术
 
-junit单元测试对方法测试，自动化测试
 =======
 BS结构
 
 ![9dc6606373851764ad66003b86d2c82](C:\Users\Administrator\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\9dc6606373851764ad66003b86d2c82.jpg)
+
+
 
 ## 11、Java高级技术
 
@@ -2872,7 +2872,7 @@ public static void afterClass()
 
 
 
-2、反射
+### 2、反射
 
 加载类，并允许以编程的方式解剖类中的各种成分（成员变量、方法、构造器等）
 
@@ -2891,5 +2891,104 @@ System.out.println(c2);
 Class c3=Class.forName("com.lily.d2_reflect.Student");
 System.out.println(c3);
 ```
->>>>>>> fe4f0e108e674af428df718b0d73ba7ff40fb8b5
+反射第二部，获得构造器
 
+```
+Class c=Cat.class;
+//获取类的全部构造器对象
+Constructor[] constructors=c.getDeclaredConstructors();
+for (Constructor constructor : constructors) {
+    System.out.println(constructor.getName()+">>>"+constructor.getParameterCount());
+}
+```
+
+```
+Class c= Cat.class;
+//Constructor con1=c.getConstructor();不能拿私有的
+Constructor con1=c.getDeclaredConstructor();//定位无参数
+Constructor con2=c.getDeclaredConstructor(String.class,int.class);//定位有参数
+
+//3、得到构造器的目的依然是初始化对象返回
+Cat c1 =(Cat) con1.newInstance();
+System.out.println(c1);
+
+con2.setAccessible(true);//禁止访问权限（暴力反射），解决私有的构造器不能改变
+Cat c2=(Cat)con2.newInstance("叮当猫",30);
+System.out.println(c2);
+```
+
+反射第三步，获取成员对象
+
+```
+Class c=Cat.class;
+//获取全部对象
+Field[] fields=c.getDeclaredFields();
+for (Field field : fields) {
+    System.out.println(field.getType()+">>>"+field.getName());
+}
+
+//获取单个对象
+Field fname=c.getDeclaredField("name");
+
+//获取成员变量的作用依然是赋值、取值
+fname.setAccessible(true);//暴力反射
+Cat cat=new Cat();
+fname.set(cat,"哆啦A梦");
+String name = (String)fname.get(cat);
+System.out.println(name);
+```
+
+反射第四步，获取成员方法
+
+```
+Class c=Cat.class;
+Method[] methods=c.getDeclaredMethods();
+//获取所有方法
+for (Method method : methods) {
+    System.out.println(method.getName()+">>>"+method.getParameterCount());
+}
+
+//获取单个方法
+Method eat1=c.getDeclaredMethod("eat");
+Method eat2=c.getDeclaredMethod("eat",String.class);
+
+//获取方法的目的，执行
+Cat cat=new Cat();
+Object result = eat1.invoke(cat);
+System.out.println(result);
+eat2.setAccessible(true);//暴力反射
+Object result2 = eat2.invoke(cat,"鱼儿");
+System.out.println(result2);
+```
+
+### 3、反射的作用
+
+可以在运行时得到一个类的全部成分然后操作
+
+可以破坏封装性
+
+也可以破坏泛型的约束性
+
+更重要的用途：适合做Java高级框架
+
+```
+public static void saveObject(Object obj) throws Exception {
+    //获取对象中的全部字段，对象中有多少个字段，我们不清楚，但反射可以解决
+    PrintWriter pw=new PrintWriter(new FileWriter("day14-junit-reflect-annotation-proxy/src/obj.txt"));
+    Class c=obj.getClass();
+    String className=c.getSimpleName();//Student
+    System.out.println(className);
+    pw.println("~~~~~~~~~~~"+className+"~~~~~~~~~~");
+    Field[] fields=c.getDeclaredFields();
+    for (Field field : fields) {
+        String name=field.getName();
+        field.setAccessible(true);
+        String value=field.get(obj)+"";
+        pw.println(name+"="+value);
+        System.out.println(name+"="+value);
+    }
+    pw.close();
+}
+```
+
+### 4、注解
