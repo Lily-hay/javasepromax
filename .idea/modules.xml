@@ -15,7 +15,11 @@
       <module fileurl="file://$PROJECT_DIR$/day11-special-file-log/day11-special-file-log.iml" filepath="$PROJECT_DIR$/day11-special-file-log/day11-special-file-log.iml" />
       <module fileurl="file://$PROJECT_DIR$/day12-thead/day12-thead.iml" filepath="$PROJECT_DIR$/day12-thead/day12-thead.iml" />
       <module fileurl="file://$PROJECT_DIR$/day13-network/day13-network.iml" filepath="$PROJECT_DIR$/day13-network/day13-network.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/day14-unit-reflect-annotation-proxy/day14-unit-reflect-annotation-proxy.iml" filepath="$PROJECT_DIR$/day14-unit-reflect-annotation-proxy/day14-unit-reflect-annotation-proxy.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/day14-junit-reflect-annotation-proxy/day14-junit-reflect-annotation-proxy.iml" filepath="$PROJECT_DIR$/day14-junit-reflect-annotation-proxy/day14-junit-reflect-annotation-proxy.iml" />
+>>>>>>> fe4f0e108e674af428df718b0d73ba7ff40fb8b5
       <module fileurl="file://$PROJECT_DIR$/javasepromax.iml" filepath="$PROJECT_DIR$/javasepromax.iml" />
     </modules>
   </component>

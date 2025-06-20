@@ -2670,6 +2670,8 @@ System.out.println(ip1.isReachable(5000));
 
 ![网络传输模型](D:\java codes\javasepromax\笔记图片\网络传输模型.jpg)
 
+![网络传输模型](E:\javaprojects\javasepromax\笔记图片\网络传输模型.jpg)
+
 传输层的两个通信协议
 
 UDP（用户数据报协议）  TCP（传输控制协议）
@@ -2735,6 +2737,8 @@ TCP主要有三个步骤实现可靠传输：三次握手建立连接（确认�
 !(D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
 
 ![TCP断开](D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
+
+![TCP断开](E:\javaprojects\javasepromax\笔记图片\TCP断开.jpg)
 
 客户端
 
@@ -2809,6 +2813,83 @@ public void run()
 }
 ```
 
+<<<<<<< HEAD
 11、Java高级技术
 
 junit单元测试对方法测试，自动化测试
+=======
+BS结构
+
+![9dc6606373851764ad66003b86d2c82](C:\Users\Administrator\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\9dc6606373851764ad66003b86d2c82.jpg)
+
+## 11、Java高级技术
+
+### 1、junit单元测试
+
+测试方法
+
+```
+@Test
+public void testGetMaxIndex()
+{
+    /*System.out.println(StringUtil.getMaxIndex(null));
+    System.out.println(StringUtil.getMaxIndex(""));
+    System.out.println(StringUtil.getMaxIndex("admin"));*/
+    int i1=StringUtil.getMaxIndex(null);
+    Assert.assertEquals("null测试失败！",-1,i1);
+    int i2=StringUtil.getMaxIndex("");
+    Assert.assertEquals("空字符串测试失败！",-1,i2);
+    int i3=StringUtil.getMaxIndex("admin");
+    Assert.assertEquals("admin测试失败！",4,i3);
+}
+```
+
+Junit注解
+
+```
+@Before
+public void before()//修饰实例方法，每个测试方法执行一次
+{
+    System.out.println("============before=========");
+}
+@After
+public void after()
+{
+    System.out.println("============after=========");
+}
+@BeforeClass
+public static void beforeClass()//修饰静态方法，所有测试方法前后执行一次
+{
+    System.out.println("==========beforeClass========");
+}
+
+@AfterClass
+public static void afterClass()
+{
+    System.out.println("===========afterClass=========");
+}
+```
+
+
+
+2、反射
+
+加载类，并允许以编程的方式解剖类中的各种成分（成员变量、方法、构造器等）
+
+```
+//反射第一步：获取Class对象
+//1方式一，类名.class
+Class c1=Student.class;
+System.out.println(c1);
+
+//2方式二，对象.getClass()
+Student s=new Student();
+Class c2=s.getClass();
+System.out.println(c2);
+
+//方式三，Class.forName(全类名)
+Class c3=Class.forName("com.lily.d2_reflect.Student");
+System.out.println(c3);
+```
+>>>>>>> fe4f0e108e674af428df718b0d73ba7ff40fb8b5
+
