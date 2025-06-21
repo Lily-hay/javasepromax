@@ -2826,7 +2826,7 @@ BS结构
 
 ### 1、junit单元测试
 
-测试方法
+测试方法，测试方法：公开的、无参数的、无返回的
 
 ```
 @Test
@@ -2992,3 +2992,50 @@ public static void saveObject(Object obj) throws Exception {
 ```
 
 ### 4、注解
+
+Java代码里的特殊标记，@Override,@Test等，作用：让其他程序根据注解信息决定怎么执行程序
+
+注解本质是一个接口，Java中所有注解都是继承Annotation接口
+
+自定义注解，若只有value一个值，可以省略名字不写
+
+使用的@注解(...)其实就是一个实现类对象，实现了该注解以及Annotation接口
+
+元注解：修饰注解的注解
+
+@Target(ElementType.TYPE) 声明被修饰的注解只能在哪些范围内使用
+
+@Retention(RetentionPolicy.RANTIME) 声明注解保留的周期
+
+
+
+解析注解
+
+判断类上、方法上、成员变量上是否存在注解，并把注解里的内容解析出来
+
+```
+public class AnnotationDemo2 {
+    @Test
+    public void parseClass() throws Exception {
+        Class c=Demo.class;//先得到该类
+        Method method=c.getDeclaredMethod("test1");
+        if(c.isAnnotationPresent(MyTest4.class))//再判断该类上有没有注解
+        {
+            MyTest4 myTest4= (MyTest4) c.getDeclaredAnnotation(MyTest4.class);
+            System.out.println(myTest4.value());
+            System.out.println(myTest4.aaa());
+            System.out.println(myTest4.bbb());
+            
+        }
+    }
+    
+}
+@MyTest4(value="java",aaa=99,bbb={"study"})
+class Demo{
+    @MyTest4(value="无为而治",aaa=9.9,bbb={"心静","悟道"})
+    public void test1()
+    {
+        
+    }
+}
+```
