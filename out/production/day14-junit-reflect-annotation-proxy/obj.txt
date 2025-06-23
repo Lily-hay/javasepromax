@@ -1,0 +1,5 @@
+~~~~~~~~~~~Student~~~~~~~~~~
+name=亦菲
+age=28
+sex=女
+desc=pretty

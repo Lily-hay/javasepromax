@@ -17,6 +17,7 @@
       <module fileurl="file://$PROJECT_DIR$/day13-network/day13-network.iml" filepath="$PROJECT_DIR$/day13-network/day13-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/day14-junit-reflect-annotation-proxy/day14-junit-reflect-annotation-proxy.iml" filepath="$PROJECT_DIR$/day14-junit-reflect-annotation-proxy/day14-junit-reflect-annotation-proxy.iml" />
       <module fileurl="file://$PROJECT_DIR$/javasepromax.iml" filepath="$PROJECT_DIR$/javasepromax.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_test/my_test.iml" filepath="$PROJECT_DIR$/my_test/my_test.iml" />
     </modules>
   </component>
 </project>
