@@ -949,10 +949,10 @@ Arrays.sort(names,String::compareToIgnoreCase);
 Create c1=Car::new;
 ```
 
-<<<<<<< HEAD
+
 ### 5、正则表达式
 
-![477984595e587b03ca6ebd85ee76357](C:\Users\DL\Documents\WeChat Files\wxid_in4ab2xn7v9h22\FileStorage\Temp\477984595e587b03ca6ebd85ee76357.jpg)
+![正则表达式](E:\javaprojects\javasepromax\笔记图片\正则表达式.jpg)
 
 ```
 String data="欢迎张全蛋光临本系统！他删库并跑路了！欢迎李二狗光临本系统！"+
