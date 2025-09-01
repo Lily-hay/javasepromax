@@ -2617,7 +2617,7 @@ ExecutorService pool= Executors.newFixedThreadPool(3);
 
 CS（客户端、服务端）结构、BS（浏览器、服务端）结构
 
-网络通信的关键三要素：
+网络通信的关键三要素：IP、端口、协议
 
 1、IP  设备在网络中的地址，是唯一标识
 
@@ -2733,6 +2733,8 @@ TCP的最终目的：在不可靠的信道上实现可靠的传输
 TCP主要有三个步骤实现可靠传输：三次握手建立连接（确认双发收发正常），传输数据进行确认，四次挥手断开连接
 
 ![TCP连接](D:\java codes\javasepromax\笔记图片\TCP连接.jpg)
+
+![TCP连接](E:\javaprojects\javasepromax\笔记图片\TCP连接.jpg)
 
 !(D:\java codes\javasepromax\笔记图片\TCP断开.jpg)
 
